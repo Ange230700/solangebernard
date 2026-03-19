@@ -1,0 +1,12 @@
+{
+  "name": "solangebernard",
+  "private": true,
+  "version": "0.0.0",
+  "packageManager": "pnpm@10.23.0",
+  "scripts": {
+    "dev": "pnpm -r --if-present dev",
+    "build": "pnpm -r --if-present build",
+    "test": "pnpm -r --if-present test",
+    "typecheck": "pnpm -r --if-present typecheck"
+  }
+}
