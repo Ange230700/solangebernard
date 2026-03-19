@@ -1,12 +1,23 @@
 <section class="demo-shell">
   <div class="demo-copy">
-    <p class="eyebrow">PrimeNG check</p>
+    <p class="eyebrow">PrimeNG Health Check</p>
     <h1>{{ heading }}</h1>
     <p>
-      This tiny page proves PrimeNG is configured with the shared Aura preset in
-      the web app.
+      This tiny page calls the Nest <code>/health</code> endpoint through
+      <code>@repo/api-client</code>.
     </p>
   </div>
 
-  <p-button [label]="buttonLabel" />
+  <div class="status-row">
+    <p-tag [severity]="tagSeverity()" [value]="statusText()" />
+    <p-button
+      label="Check again"
+      [loading]="state() === 'loading'"
+      (onClick)="loadHealth()"
+    />
+  </div>
+
+  @if (errorMessage(); as errorMessage) {
+    <p class="error-copy">{{ errorMessage }}</p>
+  }
 </section>

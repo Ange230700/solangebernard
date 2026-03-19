@@ -2,7 +2,7 @@
   min-height: 100dvh;
   display: grid;
   place-items: center;
-  gap: 1rem;
+  gap: 1.25rem;
   padding: 2rem;
   text-align: center;
   background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
@@ -26,4 +26,17 @@
 h1,
 p {
   margin: 0;
+}
+
+.status-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-copy {
+  max-width: 32rem;
+  color: #b91c1c;
 }

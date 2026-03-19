@@ -1,16 +1,26 @@
 <ion-header translucent="true">
   <ion-toolbar>
-    <ion-title>Mobile</ion-title>
+    <ion-title>Mobile Health</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
   <section class="intro">
-    <p class="eyebrow">Ionic Mobile Shell</p>
-    <h1>Mobile is using Ionic now.</h1>
+    <p class="eyebrow">Ionic Health Check</p>
+    <h1>Mobile talks to the Nest API.</h1>
     <p>
-      This tiny page is the mobile-only starter screen and can be replaced later
-      when real mobile flows are added.
+      This tiny page calls the shared health endpoint through
+      <code>@repo/api-client</code>.
     </p>
+
+    <ion-badge [color]="badgeColor()">{{ statusText() }}</ion-badge>
+
+    <ion-button (click)="loadHealth()" [disabled]="state() === 'loading'">
+      Check again
+    </ion-button>
+
+    @if (errorMessage(); as errorMessage) {
+      <p class="error-copy">{{ errorMessage }}</p>
+    }
   </section>
 </ion-content>

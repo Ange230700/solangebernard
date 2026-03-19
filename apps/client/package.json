@@ -19,6 +19,7 @@
   "private": true,
   "packageManager": "pnpm@10.23.0",
   "dependencies": {
+    "@repo/api-client": "workspace:*",
     "@angular/animations": "^21.2.5",
     "@angular/cdk": "^21.2.3",
     "@angular/common": "^21.2.0",
