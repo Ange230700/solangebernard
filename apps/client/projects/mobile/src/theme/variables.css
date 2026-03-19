@@ -1,0 +1,10 @@
+/**
+ * Ionic theme variables for the mobile app.
+ * Keep mobile-specific theming here.
+ */
+
+@import '@ionic/angular/css/palettes/dark.system.css';
+
+:root {
+  --ion-color-primary: #3880ff;
+}

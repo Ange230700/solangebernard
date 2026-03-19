@@ -1,0 +1,25 @@
+:host {
+  display: block;
+}
+
+.intro {
+  min-height: 100%;
+  display: grid;
+  align-content: center;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ion-color-primary, #3880ff);
+}
+
+h1,
+p {
+  margin: 0;
+}
