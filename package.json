@@ -11,6 +11,12 @@
     "dev": "pnpm -r --if-present dev",
     "build": "pnpm -r --if-present build",
     "test": "pnpm -r --if-present test",
-    "typecheck": "pnpm -r --if-present typecheck"
+    "typecheck": "pnpm -r --if-present typecheck",
+    "commitlint": "commitlint",
+    "commitlint:last": "commitlint --from HEAD~1 --to HEAD"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.5.0",
+    "@commitlint/config-conventional": "^20.5.0"
   }
 }
