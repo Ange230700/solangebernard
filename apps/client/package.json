@@ -5,7 +5,10 @@
     "ng": "ng",
     "generate": "ng generate",
     "generate:application": "ng generate application",
-    "generate:library": "ng generate library"
+    "generate:library": "ng generate library",
+    "serve:web": "ng serve web",
+    "serve:desktop": "ng serve desktop",
+    "serve:mobile": "ng serve mobile"
   },
   "private": true,
   "packageManager": "pnpm@10.23.0",
@@ -20,9 +23,12 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
+    "@angular/build": "^21.2.3",
     "@angular/cli": "^21.2.3",
     "@angular/compiler-cli": "^21.2.0",
+    "jsdom": "^28.0.0",
     "prettier": "^3.8.1",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "vitest": "^4.0.8"
   }
 }

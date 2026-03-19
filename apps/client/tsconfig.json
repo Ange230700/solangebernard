@@ -16,5 +16,25 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true
   },
-  "files": []
+  "files": [],
+  "references": [
+    {
+      "path": "./projects/web/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/web/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/desktop/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/desktop/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/mobile/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/mobile/tsconfig.spec.json"
+    }
+  ]
 }
