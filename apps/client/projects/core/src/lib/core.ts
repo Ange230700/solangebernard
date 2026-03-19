@@ -1,15 +1,9 @@
-import { Component } from '@angular/core';
+import { InjectionToken } from '@angular/core';
 
-@Component({
-  selector: 'lib-core',
-  imports: [],
-  template: `
-    <p>
-      core works!
-    </p>
-  `,
-  styles: ``,
-})
-export class Core {
-
+export interface ClientCoreConfig {
+  apiBaseUrl: string;
 }
+
+export const CLIENT_CORE_CONFIG = new InjectionToken<ClientCoreConfig>(
+  'CLIENT_CORE_CONFIG',
+);

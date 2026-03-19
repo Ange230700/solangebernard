@@ -1,15 +1,23 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'lib-ui-web',
+  selector: 'repo-ui-web-shell',
+  standalone: true,
   imports: [],
   template: `
-    <p>
-      ui-web works!
-    </p>
+    <section class="ui-web-shell">
+      <ng-content />
+    </section>
   `,
-  styles: ``,
-})
-export class UiWeb {
+  styles: `
+    :host {
+      display: block;
+    }
 
-}
+    .ui-web-shell {
+      display: grid;
+      gap: 1rem;
+    }
+  `,
+})
+export class UiWebShell {}
