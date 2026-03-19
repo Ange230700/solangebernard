@@ -1,0 +1,7 @@
+node_modules
+dist
+coverage
+.angular
+apps/client/android
+apps/client/src-tauri
+pnpm-lock.yaml

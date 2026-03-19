@@ -6,7 +6,7 @@ import {
   IonContent,
   IonHeader,
   IonTitle,
-  IonToolbar
+  IonToolbar,
 } from '@ionic/angular/standalone';
 
 type HealthState = 'loading' | 'ok' | 'error';

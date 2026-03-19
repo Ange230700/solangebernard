@@ -8,7 +8,7 @@ describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [provideRouter(routes), provideIonicAngular({})]
+      providers: [provideRouter(routes), provideIonicAngular({})],
     }).compileComponents();
   });
 

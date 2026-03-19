@@ -5,18 +5,10 @@
   "compileOnSave": false,
   "compilerOptions": {
     "paths": {
-      "@repo/api-client": [
-        "../../packages/api-client/src/index.ts"
-      ],
-      "@repo/client-core": [
-        "./dist/core"
-      ],
-      "@repo/client-ui-web": [
-        "./dist/ui-web"
-      ],
-      "@repo/contracts": [
-        "../../packages/contracts/src/index.ts"
-      ]
+      "@repo/api-client": ["../../packages/api-client/src/index.ts"],
+      "@repo/client-core": ["./dist/core"],
+      "@repo/client-ui-web": ["./dist/ui-web"],
+      "@repo/contracts": ["../../packages/contracts/src/index.ts"]
     },
     "noPropertyAccessFromIndexSignature": true,
     "isolatedModules": true,

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'repo-ui-web-shell',
+  selector: 'lib-ui-web-shell',
   standalone: true,
   imports: [],
   template: `
