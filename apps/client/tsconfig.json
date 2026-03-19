@@ -4,6 +4,14 @@
   "extends": "../../tsconfig.base.json",
   "compileOnSave": false,
   "compilerOptions": {
+    "paths": {
+      "core": [
+        "./dist/core"
+      ],
+      "ui-web": [
+        "./dist/ui-web"
+      ]
+    },
     "noPropertyAccessFromIndexSignature": true,
     "isolatedModules": true,
     "experimentalDecorators": true,
@@ -35,6 +43,18 @@
     },
     {
       "path": "./projects/mobile/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/core/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/core/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/ui-web/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/ui-web/tsconfig.spec.json"
     }
   ]
 }
