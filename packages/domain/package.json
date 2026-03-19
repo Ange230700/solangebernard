@@ -1,0 +1,28 @@
+{
+  "name": "@repo/domain",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "prebuild": "pnpm --filter @repo/contracts build",
+    "build": "tsc -p tsconfig.json",
+    "pretypecheck": "pnpm --filter @repo/contracts build",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@repo/contracts": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  }
+}
