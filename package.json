@@ -4,6 +4,10 @@
   "version": "0.0.0",
   "packageManager": "pnpm@10.23.0",
   "scripts": {
+    "client:web": "pnpm --dir apps/client run serve:web",
+    "client:mobile": "pnpm --dir apps/client run serve:mobile",
+    "client:desktop": "pnpm --dir apps/client run tauri:dev",
+    "api": "pnpm --dir apps/api run dev",
     "dev": "pnpm -r --if-present dev",
     "build": "pnpm -r --if-present build",
     "test": "pnpm -r --if-present test",
