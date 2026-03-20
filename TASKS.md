@@ -55,6 +55,8 @@ Define exactly what is **out**:
 
 ## 2. Freeze the business actors
 
+Official source of truth: [docs/business-actors.md](docs/business-actors.md)
+
 Write down the actors explicitly:
 
 - customer
