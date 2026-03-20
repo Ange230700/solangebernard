@@ -47,6 +47,14 @@ Useful target-local commands:
 - Client Capacitor sync: `pnpm --dir apps/client run cap:sync`
 - API dev: `pnpm --dir apps/api run dev`
 - API build: `pnpm --dir apps/api run build`
+- API Prisma validate: `pnpm --dir apps/api run prisma:validate`
+- API Prisma generate: `pnpm --dir apps/api run prisma:generate`
+
+## Persistence
+
+- API Prisma schema: `apps/api/prisma/schema.prisma`
+- API Prisma config: `apps/api/prisma.config.ts`
+- API database env example: `apps/api/.env.example`
 
 ## Boundaries
 

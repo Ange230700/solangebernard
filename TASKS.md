@@ -376,6 +376,8 @@ At minimum:
 - notifications
 - notification_attempts
 
+Official source of truth: [apps/api/prisma/schema.prisma](apps/api/prisma/schema.prisma)
+
 ## 30. Define unique keys and indexes
 
 Examples:

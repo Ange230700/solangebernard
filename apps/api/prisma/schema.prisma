@@ -1,0 +1,185 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum AdminRole {
+  staff
+  admin
+}
+
+enum ProductStatus {
+  Draft
+  Published
+}
+
+enum OrderStatus {
+  PendingConfirmation
+  Confirmed
+  ReadyForDelivery
+  Delivered
+  Cancelled
+}
+
+model AdminUser {
+  id                     String                @id @default(cuid())
+  email                  String
+  passwordHash           String
+  role                   AdminRole
+  isActive               Boolean               @default(true)
+  sessions               AdminSession[]
+  passwordResetTokens    PasswordResetToken[]
+  inventoryAdjustments   InventoryAdjustment[]
+  triggeredNotifications Notification[]        @relation("NotificationOperator")
+
+  @@map("admins")
+}
+
+model AdminSession {
+  id            String    @id @default(cuid())
+  adminUserId   String
+  tokenHash     String
+  expiresAt     DateTime
+  invalidatedAt DateTime?
+  adminUser     AdminUser @relation(fields: [adminUserId], references: [id])
+
+  @@map("admin_sessions")
+}
+
+model PasswordResetToken {
+  id          String    @id @default(cuid())
+  adminUserId String
+  tokenHash   String
+  expiresAt   DateTime
+  consumedAt  DateTime?
+  adminUser   AdminUser @relation(fields: [adminUserId], references: [id])
+
+  @@map("password_reset_tokens")
+}
+
+model Product {
+  id                   String                @id @default(cuid())
+  name                 String
+  description          String?
+  category             String?
+  priceAmount          Int?
+  status               ProductStatus         @default(Draft)
+  variants             ProductVariant[]
+  media                ProductMedia[]
+  inventoryAdjustments InventoryAdjustment[]
+  orderItems           OrderItem[]
+
+  @@map("products")
+}
+
+model ProductVariant {
+  id                   String                @id @default(cuid())
+  productId            String
+  sku                  String
+  size                 String?
+  color                String?
+  variantLabel         String
+  stock                Int                   @default(0)
+  product              Product               @relation(fields: [productId], references: [id])
+  inventoryAdjustments InventoryAdjustment[]
+  orderItems           OrderItem[]
+
+  @@map("product_variants")
+}
+
+model ProductMedia {
+  id           String  @id @default(cuid())
+  productId    String
+  url          String
+  altText      String?
+  isMain       Boolean @default(false)
+  displayOrder Int?
+  product      Product @relation(fields: [productId], references: [id])
+
+  @@map("product_media")
+}
+
+model InventoryAdjustment {
+  id               String         @id @default(cuid())
+  productId        String
+  productVariantId String
+  actorAdminUserId String
+  quantityDelta    Int
+  reason           String?
+  recordedAt       DateTime
+  product          Product        @relation(fields: [productId], references: [id])
+  productVariant   ProductVariant @relation(fields: [productVariantId], references: [id])
+  actor            AdminUser      @relation(fields: [actorAdminUserId], references: [id])
+
+  @@map("inventory_adjustments")
+}
+
+model Order {
+  id               String         @id @default(cuid())
+  orderReference   String
+  status           OrderStatus    @default(PendingConfirmation)
+  customerFullName String
+  customerPhone    String
+  deliveryArea     String
+  deliveryAddress  String
+  internalNotes    String?
+  items            OrderItem[]
+  notifications    Notification[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id                   String         @id @default(cuid())
+  orderId              String
+  productId            String
+  productVariantId     String
+  productNameSnapshot  String
+  variantLabelSnapshot String
+  unitPriceAmount      Int
+  quantity             Int
+  order                Order          @relation(fields: [orderId], references: [id])
+  product              Product        @relation(fields: [productId], references: [id])
+  productVariant       ProductVariant @relation(fields: [productVariantId], references: [id])
+
+  @@map("order_items")
+}
+
+model Notification {
+  id                     String                @id @default(cuid())
+  orderId                String
+  relatedOrderStatus     OrderStatus?
+  triggerEvent           String
+  /// Notification status stays string-based until the repo freezes the full
+  /// notification lifecycle vocabulary.
+  status                 String
+  /// Channel stays open-ended because the exact MVP notification channel choice
+  /// is not frozen yet.
+  channel                String?
+  recipientName          String
+  recipientPhone         String
+  triggeredByAdminUserId String?
+  queuedAt               DateTime
+  order                  Order                 @relation(fields: [orderId], references: [id])
+  triggeredBy            AdminUser?            @relation("NotificationOperator", fields: [triggeredByAdminUserId], references: [id])
+  attempts               NotificationAttempt[]
+
+  @@map("notifications")
+}
+
+model NotificationAttempt {
+  id                   String       @id @default(cuid())
+  notificationId       String
+  outcome              String
+  providerReference    String?
+  providerResponseCode String?
+  providerMessage      String?
+  attemptedAt          DateTime
+  notification         Notification @relation(fields: [notificationId], references: [id])
+
+  @@map("notification_attempts")
+}
