@@ -4,6 +4,31 @@ import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
+const clientImportPatterns = [
+  '@repo/api-client',
+  '@repo/client',
+  '@repo/client-core',
+  '@repo/client-ui-web',
+  '@angular/*',
+  '@ionic/*',
+  '@capacitor/*',
+  '@tauri-apps/*',
+  'primeng',
+  'primeng/*',
+];
+
+const controllerPersistencePatterns = [
+  '@prisma/client',
+  'drizzle-orm',
+  'drizzle-orm/*',
+  'typeorm',
+  'typeorm/*',
+  '**/entities/**',
+  '**/models/**',
+  '**/persistence/**',
+  '**/prisma/**',
+];
+
 export default tseslint.config(
   {
     ignores: ['eslint.config.mjs'],
@@ -22,6 +47,45 @@ export default tseslint.config(
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
+    },
+  },
+  {
+    files: ['src/**/*.ts', 'test/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: clientImportPatterns,
+              message:
+                'apps/api must stay server-side. Do not import client packages or client UI frameworks into API code.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ['src/**/*.controller.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: clientImportPatterns,
+              message:
+                'apps/api must stay server-side. Do not import client packages or client UI frameworks into API code.',
+            },
+            {
+              group: controllerPersistencePatterns,
+              message:
+                'Controller files must map persistence models to contracts through services. Do not import ORM or persistence-model modules directly into controllers.',
+            },
+          ],
+        },
+      ],
     },
   },
   {

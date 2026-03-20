@@ -317,6 +317,8 @@ It should **not** leak into `mobile`.
 
 ## 24. Define import boundaries
 
+Official source of truth: [docs/import-boundaries.md](docs/import-boundaries.md)
+
 Set lint or tooling rules so:
 
 - mobile cannot import `ui-web`

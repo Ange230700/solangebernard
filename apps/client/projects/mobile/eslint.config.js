@@ -7,6 +7,25 @@ module.exports = defineConfig([
   {
     files: ['**/*.ts'],
     rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: '@repo/client-ui-web',
+              message:
+                'projects/mobile must not depend on @repo/client-ui-web. Use @repo/client-core or mobile-specific UI instead.',
+            },
+          ],
+          patterns: [
+            {
+              group: ['@repo/client-ui-web/*', '**/ui-web/**'],
+              message:
+                'projects/mobile must not import from projects/ui-web. Use @repo/client-core or mobile-specific UI instead.',
+            },
+          ],
+        },
+      ],
       '@angular-eslint/directive-selector': [
         'error',
         {

@@ -4,6 +4,24 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
+const frameworkImportPatterns = [
+  '@angular/*',
+  '@nestjs/*',
+  '@ionic/*',
+  '@capacitor/*',
+  '@tauri-apps/*',
+  'primeng',
+  'primeng/*',
+];
+
+const ormImportPatterns = [
+  '@prisma/client',
+  'drizzle-orm',
+  'drizzle-orm/*',
+  'typeorm',
+  'typeorm/*',
+];
+
 export default tseslint.config(
   {
     ignores: [
@@ -47,6 +65,56 @@ export default tseslint.config(
     },
     rules: {
       '@typescript-eslint/no-empty-object-type': 'off',
+    },
+  },
+  {
+    files: ['packages/domain/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: [
+                ...frameworkImportPatterns,
+                '@repo/api',
+                '@repo/api-client',
+                '@repo/client',
+                '@repo/client-core',
+                '@repo/client-ui-web',
+              ],
+              message:
+                'packages/domain must stay framework-free. Keep app, client, and framework imports out of domain code.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ['packages/contracts/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: [
+                ...frameworkImportPatterns,
+                ...ormImportPatterns,
+                '@repo/api',
+                '@repo/api-client',
+                '@repo/client',
+                '@repo/client-core',
+                '@repo/client-ui-web',
+                '@repo/domain',
+              ],
+              message:
+                'packages/contracts must stay transport-safe. Keep framework, domain, app, client, and ORM imports out of shared contracts.',
+            },
+          ],
+        },
+      ],
     },
   },
   eslintConfigPrettier,
