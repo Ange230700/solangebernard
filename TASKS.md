@@ -328,6 +328,8 @@ Set lint or tooling rules so:
 
 ## 25. Add path aliases and keep them stable
 
+Official source of truth: [docs/path-aliases.md](docs/path-aliases.md)
+
 ## 26. Add architecture docs for the monorepo
 
 A short `ARCHITECTURE.md` is enough.

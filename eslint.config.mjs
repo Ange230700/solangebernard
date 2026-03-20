@@ -22,6 +22,14 @@ const ormImportPatterns = [
   'typeorm/*',
 ];
 
+const internalWorkspaceSubpathPatterns = [
+  '@repo/contracts/*',
+  '@repo/domain/*',
+  '@repo/api-client/*',
+  '@repo/client-core/*',
+  '@repo/client-ui-web/*',
+];
+
 export default tseslint.config(
   {
     ignores: [
@@ -65,6 +73,18 @@ export default tseslint.config(
     },
     rules: {
       '@typescript-eslint/no-empty-object-type': 'off',
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: internalWorkspaceSubpathPatterns,
+              message:
+                'Use stable package-root aliases for internal workspaces. Do not deep-import another workspace internals.',
+            },
+          ],
+        },
+      ],
     },
   },
   {

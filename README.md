@@ -51,6 +51,7 @@ Useful target-local commands:
 ## Boundaries
 
 - Boundary source of truth: `docs/workspace-boundaries.md`
+- Path alias source of truth: `docs/path-aliases.md`
 - `packages/contracts` is for shared contracts and transport-safe types only.
 - `packages/domain` is for framework-free domain logic only.
 - `packages/api-client` is for typed client calls into the API only.

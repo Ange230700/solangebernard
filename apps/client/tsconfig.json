@@ -1,15 +1,9 @@
 /* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
 /* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "../../tsconfig.client-aliases.json",
   "compileOnSave": false,
   "compilerOptions": {
-    "paths": {
-      "@repo/api-client": ["../../packages/api-client/src/index.ts"],
-      "@repo/client-core": ["./dist/core"],
-      "@repo/client-ui-web": ["./dist/ui-web"],
-      "@repo/contracts": ["../../packages/contracts/src/index.ts"]
-    },
     "noPropertyAccessFromIndexSignature": true,
     "isolatedModules": true,
     "experimentalDecorators": true,

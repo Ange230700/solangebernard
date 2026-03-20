@@ -15,6 +15,24 @@ module.exports = defineConfig([
     ],
     processor: angular.processInlineTemplates,
     rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: [
+                '@repo/contracts/*',
+                '@repo/api-client/*',
+                '@repo/client-core/*',
+                '@repo/client-ui-web/*',
+                '@repo/domain/*',
+              ],
+              message:
+                'Use the stable package-root aliases from docs/path-aliases.md. Do not deep-import internal workspace files.',
+            },
+          ],
+        },
+      ],
       '@angular-eslint/directive-selector': [
         'error',
         {

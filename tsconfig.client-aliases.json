@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@repo/api-client": ["packages/api-client/src/index.ts"],
+      "@repo/client-core": ["apps/client/dist/core"],
+      "@repo/client-ui-web": ["apps/client/dist/ui-web"],
+      "@repo/contracts": ["packages/contracts/src/index.ts"]
+    }
+  }
+}

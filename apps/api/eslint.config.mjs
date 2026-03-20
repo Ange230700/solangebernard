@@ -29,6 +29,14 @@ const controllerPersistencePatterns = [
   '**/prisma/**',
 ];
 
+const internalWorkspaceSubpathPatterns = [
+  '@repo/contracts/*',
+  '@repo/domain/*',
+  '@repo/api-client/*',
+  '@repo/client-core/*',
+  '@repo/client-ui-web/*',
+];
+
 export default tseslint.config(
   {
     ignores: ['eslint.config.mjs'],
@@ -61,6 +69,11 @@ export default tseslint.config(
               message:
                 'apps/api must stay server-side. Do not import client packages or client UI frameworks into API code.',
             },
+            {
+              group: internalWorkspaceSubpathPatterns,
+              message:
+                'Use the stable package-root aliases from docs/path-aliases.md. Do not deep-import internal workspace files.',
+            },
           ],
         },
       ],
@@ -77,6 +90,11 @@ export default tseslint.config(
               group: clientImportPatterns,
               message:
                 'apps/api must stay server-side. Do not import client packages or client UI frameworks into API code.',
+            },
+            {
+              group: internalWorkspaceSubpathPatterns,
+              message:
+                'Use the stable package-root aliases from docs/path-aliases.md. Do not deep-import internal workspace files.',
             },
             {
               group: controllerPersistencePatterns,
