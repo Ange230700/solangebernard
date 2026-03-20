@@ -334,6 +334,8 @@ Official source of truth: [docs/path-aliases.md](docs/path-aliases.md)
 
 A short `ARCHITECTURE.md` is enough.
 
+Official source of truth: [ARCHITECTURE.md](ARCHITECTURE.md)
+
 ---
 
 # 4. Design the data model
