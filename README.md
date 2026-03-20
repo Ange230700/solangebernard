@@ -28,6 +28,10 @@ From the repo root:
 - API: `pnpm api`
 - Build everything: `pnpm build`
 - Typecheck everything: `pnpm typecheck`
+- Run all client app tests: `pnpm test:client`
+- Run web tests only: `pnpm test:client:web`
+- Run desktop tests only: `pnpm test:client:desktop`
+- Run mobile tests only: `pnpm test:client:mobile`
 
 Useful target-local commands:
 
@@ -36,6 +40,10 @@ Useful target-local commands:
 - Client desktop Angular serve: `pnpm --dir apps/client run serve:desktop`
 - Client Tauri dev: `pnpm --dir apps/client run tauri:dev`
 - Client Tauri build: `pnpm --dir apps/client run tauri:build`
+- Client tests: `pnpm --dir apps/client run test`
+- Client web tests: `pnpm --dir apps/client run test:web`
+- Client desktop tests: `pnpm --dir apps/client run test:desktop`
+- Client mobile tests: `pnpm --dir apps/client run test:mobile`
 - Client Capacitor sync: `pnpm --dir apps/client run cap:sync`
 - API dev: `pnpm --dir apps/api run dev`
 - API build: `pnpm --dir apps/api run build`
