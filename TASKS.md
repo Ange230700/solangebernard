@@ -258,6 +258,9 @@ Examples:
 
 ## 19. Define allowed state transitions
 
+Official source of truth:
+[docs/domain-state-transitions.md](docs/domain-state-transitions.md)
+
 Write them down explicitly.
 
 For orders:
