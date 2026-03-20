@@ -51,6 +51,7 @@ Useful target-local commands:
 ## Boundaries
 
 - Architecture source of truth: `ARCHITECTURE.md`
+- Database source of truth: `docs/database-choice.md`
 - Boundary source of truth: `docs/workspace-boundaries.md`
 - Path alias source of truth: `docs/path-aliases.md`
 - `packages/contracts` is for shared contracts and transport-safe types only.

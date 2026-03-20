@@ -345,6 +345,8 @@ Official source of truth: [ARCHITECTURE.md](ARCHITECTURE.md)
 If not decided yet, choose one and stop delaying.
 For this type of system, **PostgreSQL** is the sane default.
 
+Official source of truth: [docs/database-choice.md](docs/database-choice.md)
+
 ## 28. Choose the ORM or query layer
 
 Pick one:

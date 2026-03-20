@@ -77,7 +77,8 @@ future DB-layer shapes directly as client-facing responses.
 
 ## Current Limitation
 
-- The repo has not chosen a database layer yet.
+- The repo has chosen PostgreSQL as the target database.
+- The repo has not chosen an ORM or query layer yet.
 - Because of that, the "API cannot dump DB models directly into clients" rule
   is currently enforced as a pre-ORM guardrail:
   controller files may not import common ORM packages or persistence-model path
