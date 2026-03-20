@@ -88,6 +88,8 @@ Define product statuses:
 
 ## 5. Freeze inventory behavior
 
+Official source of truth: [docs/inventory-behavior.md](docs/inventory-behavior.md)
+
 Decide now:
 
 - does order creation reserve stock immediately?
