@@ -273,6 +273,8 @@ For orders:
 
 ## 20. Define error types
 
+Official source of truth: [docs/domain-error-types.md](docs/domain-error-types.md)
+
 Examples:
 
 - invalid credentials
