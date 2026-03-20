@@ -1,4 +1,4 @@
-@desktop @api @auth @authorization @mvp
+@desktop @api @auth @mvp
 Feature: Role-based back-office authorization
   As the business
   I want back-office actions to respect user roles

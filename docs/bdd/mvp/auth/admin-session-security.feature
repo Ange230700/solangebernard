@@ -1,4 +1,4 @@
-@desktop @api @auth @security @mvp
+@desktop @api @auth @mvp
 Feature: Back-office session security
   As a back-office user
   I want my authenticated session to be protected
