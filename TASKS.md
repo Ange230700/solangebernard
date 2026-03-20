@@ -206,6 +206,8 @@ Define the ubiquitous language:
 
 ## 15. Define domain invariants
 
+Official source of truth: [docs/domain-invariants.md](docs/domain-invariants.md)
+
 Examples:
 
 - unpublished products are invisible publicly
