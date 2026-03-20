@@ -24,6 +24,8 @@ The goal is to ship a **working MVP** for:
 
 ## 1. Freeze the MVP scope
 
+Official source of truth: [docs/mvp-scope.md](docs/mvp-scope.md)
+
 Define exactly what is **in**:
 
 - public catalog
