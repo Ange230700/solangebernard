@@ -1,11 +1,11 @@
-@desktop @api @orders @admin @mvp
+@desktop @api @orders @mvp
 Feature: Manage customer orders in the back office
   As a staff member
   I want to review and update orders
   So that fulfillment is tracked clearly
 
   Background:
-    Given I am signed in as an admin user
+    Given I am signed in as a staff user
     And an order "ORD-001" exists with status "Pending confirmation"
 
   Scenario: Confirm a pending order

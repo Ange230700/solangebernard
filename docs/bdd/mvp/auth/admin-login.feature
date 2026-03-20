@@ -1,5 +1,5 @@
 @desktop @api @auth @mvp
-Feature: Admin login
+Feature: Back-office login
   As a back-office user
   I want to sign in securely
   So that I can manage products, inventory, and orders
@@ -7,9 +7,17 @@ Feature: Admin login
   Background:
     Given an active admin user exists with email "admin@solangebernard.com"
     And the password for "admin@solangebernard.com" is "SecurePass123!"
+    And an active staff user exists with email "staff@solangebernard.com"
+    And the password for "staff@solangebernard.com" is "SecurePass123!"
 
-  Scenario: Successful login with valid credentials
+  Scenario: Successful admin login with valid credentials
     When I submit the login form with email "admin@solangebernard.com" and password "SecurePass123!"
+    Then I should be authenticated successfully
+    And I should receive an authenticated session
+    And I should be redirected to the back-office dashboard
+
+  Scenario: Successful staff login with valid credentials
+    When I submit the login form with email "staff@solangebernard.com" and password "SecurePass123!"
     Then I should be authenticated successfully
     And I should receive an authenticated session
     And I should be redirected to the back-office dashboard
@@ -25,8 +33,8 @@ Feature: Admin login
     Then authentication should fail
     And I should see a generic invalid credentials message
 
-  Scenario: Disabled user cannot log in
-    Given a disabled admin user exists with email "disabled@solangebernard.com"
+  Scenario: Disabled back-office user cannot log in
+    Given a disabled staff user exists with email "disabled@solangebernard.com"
     And the password for "disabled@solangebernard.com" is "SecurePass123!"
     When I submit the login form with email "disabled@solangebernard.com" and password "SecurePass123!"
     Then authentication should fail

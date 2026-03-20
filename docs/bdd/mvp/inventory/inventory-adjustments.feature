@@ -1,11 +1,11 @@
-@desktop @api @inventory @admin @mvp
+@desktop @api @inventory @mvp
 Feature: Adjust inventory for product variants
   As a staff member
   I want to update stock levels
   So that the catalog reflects what is actually available
 
   Background:
-    Given I am signed in as an admin user
+    Given I am signed in as a staff user
     And a product named "Cotton Shirt" exists with the following variants:
       | size | color | stock |
       | M    | White | 5     |
@@ -28,4 +28,4 @@ Feature: Adjust inventory for product variants
   Scenario: View inventory history for a variant
     Given inventory adjustments have been recorded for the "M / White" variant of "Cotton Shirt"
     When I open inventory history for the "M / White" variant
-    Then I should see the recorded stock adjustments in reverse chronological orderdocs/bdd/mvp/platform/health-endpoint.feature
+    Then I should see the recorded stock adjustments in reverse chronological order

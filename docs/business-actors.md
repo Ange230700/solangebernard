@@ -83,8 +83,11 @@ Current repo signals already confirm:
   `docs/bdd/mvp/auth/admin-authorization.feature`
 - `admin` can manage users in
   `docs/bdd/mvp/auth/admin-authorization.feature`
-- back-office product, inventory, and order features describe the operator as a
-  `staff member`, even where some background steps still say `admin user`
+- back-office product, inventory, and order features treat `staff` as the
+  normal operator for day-to-day workflows
+- back-office auth features cover shared internal authentication, while
+  authorization scenarios separate staff permissions from admin-only user
+  management
 
-This document resolves that wording mismatch by treating `staff` as the normal
-operational role and `admin` as the elevated superset role.
+This document aligns the BDD pack around `staff` as the normal operational role
+and `admin` as the elevated superset role.

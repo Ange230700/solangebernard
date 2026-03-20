@@ -1,11 +1,11 @@
-@desktop @api @products @admin @mvp
+@desktop @api @products @mvp
 Feature: Manage products in the back office
   As a staff member
   I want to create and update products
   So that the public catalog stays accurate
 
   Background:
-    Given I am signed in as an admin user
+    Given I am signed in as a staff user
 
   Scenario: Create a draft product
     When I create a new product with:
