@@ -186,6 +186,8 @@ Map each feature/scenario to:
 
 ## 14. Create a domain glossary
 
+Official source of truth: [docs/domain-glossary.md](docs/domain-glossary.md)
+
 Define the ubiquitous language:
 
 - Product
