@@ -6,7 +6,7 @@ Feature: Browse the public product catalog
 
   Background:
     Given the catalog contains published products
-    And unpublished products are hidden from customers
+    And draft products are hidden from customers
 
   Scenario: View the catalog landing page
     When I open the public catalog
@@ -17,7 +17,7 @@ Feature: Browse the public product catalog
 
   Scenario: Only published products are visible
     Given a product named "Classic Black Dress" is published
-    And a product named "Internal Sample Piece" is unpublished
+    And a product named "Internal Sample Piece" is a draft product
     When I open the public catalog
     Then I should see "Classic Black Dress"
     But I should not see "Internal Sample Piece"

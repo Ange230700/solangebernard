@@ -1,6 +1,6 @@
 @desktop @api @products @mvp
 Feature: Manage products in the back office
-  As a staff member
+  As a staff user
   I want to create and update products
   So that the public catalog stays accurate
 
@@ -13,7 +13,7 @@ Feature: Manage products in the back office
       | category    | Sets            |
       | base price  | 35000           |
       | description | Lightweight set |
-    Then the product should be saved as a draft
+    Then the product status should become "Draft"
     And it should not be visible in the public catalog
 
   Scenario: Add variants to a product

@@ -1,6 +1,6 @@
 @desktop @api @inventory @mvp
 Feature: Adjust inventory for product variants
-  As a staff member
+  As a staff user
   I want to update stock levels
   So that the catalog reflects what is actually available
 

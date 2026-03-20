@@ -1,6 +1,6 @@
 @desktop @api @orders @mvp
 Feature: Manage customer orders in the back office
-  As a staff member
+  As a staff user
   I want to review and update orders
   So that fulfillment is tracked clearly
 
@@ -8,7 +8,7 @@ Feature: Manage customer orders in the back office
     Given I am signed in as a staff user
     And an order "ORD-001" exists with status "Pending confirmation"
 
-  Scenario: Confirm a pending order
+  Scenario: Confirm an order in "Pending confirmation"
     When I mark order "ORD-001" as "Confirmed"
     Then the order status should be "Confirmed"
 
@@ -22,7 +22,7 @@ Feature: Manage customer orders in the back office
     When I mark order "ORD-001" as "Delivered"
     Then the order status should be "Delivered"
 
-  Scenario: Cancel a pending order and restore stock
+  Scenario: Cancel an order in "Pending confirmation" and restore stock
     Given order "ORD-001" reserves 1 unit of variant "M / Grey" for product "Signature Set"
     When I cancel order "ORD-001" with reason "Customer unreachable"
     Then the order status should be "Cancelled"
