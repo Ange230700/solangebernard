@@ -1,3 +1,4 @@
+/* eslint-disable @angular-eslint/component-selector */
 import { TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 import { vi } from 'vitest';
@@ -8,20 +9,23 @@ vi.mock('@ionic/angular/standalone', async () => {
   const { RouterOutlet } = await import('@angular/router');
 
   @Component({
-    selector: 'app-ion-app',
+    selector: 'ion-app',
+    standalone: true,
     template: '<ng-content></ng-content>',
   })
   class IonApp {}
 
   @Component({
-    selector: 'app-ion-router-outlet',
+    selector: 'ion-router-outlet',
+    standalone: true,
     imports: [RouterOutlet],
     template: '<router-outlet></router-outlet>',
   })
   class IonRouterOutlet {}
 
   @Component({
-    selector: 'app-ion-badge',
+    selector: 'ion-badge',
+    standalone: true,
     template: '<ng-content></ng-content>',
   })
   class IonBadge {
@@ -29,7 +33,8 @@ vi.mock('@ionic/angular/standalone', async () => {
   }
 
   @Component({
-    selector: 'app-ion-button',
+    selector: 'ion-button',
+    standalone: true,
     template: '<ng-content></ng-content>',
   })
   class IonButton {
@@ -37,7 +42,8 @@ vi.mock('@ionic/angular/standalone', async () => {
   }
 
   @Component({
-    selector: 'app-ion-content',
+    selector: 'ion-content',
+    standalone: true,
     template: '<ng-content></ng-content>',
   })
   class IonContent {
@@ -45,7 +51,8 @@ vi.mock('@ionic/angular/standalone', async () => {
   }
 
   @Component({
-    selector: 'app-ion-header',
+    selector: 'ion-header',
+    standalone: true,
     template: '<ng-content></ng-content>',
   })
   class IonHeader {
@@ -53,13 +60,15 @@ vi.mock('@ionic/angular/standalone', async () => {
   }
 
   @Component({
-    selector: 'app-ion-title',
+    selector: 'ion-title',
+    standalone: true,
     template: '<ng-content></ng-content>',
   })
   class IonTitle {}
 
   @Component({
-    selector: 'app-ion-toolbar',
+    selector: 'ion-toolbar',
+    standalone: true,
     template: '<ng-content></ng-content>',
   })
   class IonToolbar {}
@@ -122,7 +131,7 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('app-ion-app')).toBeTruthy();
+    expect(compiled.querySelector('ion-app')).toBeTruthy();
   });
 
   it('should render the default mobile health screen without Capacitor', async () => {
