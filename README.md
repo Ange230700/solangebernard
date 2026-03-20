@@ -50,8 +50,11 @@ Useful target-local commands:
 
 ## Boundaries
 
-- `packages/*` stay plain TypeScript and framework-light.
-- `contracts` and `domain` do not take Angular, Nest, Ionic, Capacitor, or Tauri dependencies.
+- Boundary source of truth: `docs/workspace-boundaries.md`
+- `packages/contracts` is for shared contracts and transport-safe types only.
+- `packages/domain` is for framework-free domain logic only.
+- `packages/api-client` is for typed client calls into the API only.
+- `apps/api` is the Nest transport and orchestration layer.
+- `apps/client` owns the web, desktop, and mobile UI surfaces.
 - Angular UI libraries are shared only between `web` and `desktop`.
 - `mobile` uses Ionic UI and must not depend on `ui-web`.
-- The API remains NestJS with the Fastify adapter.

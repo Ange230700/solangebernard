@@ -1,7 +1,7 @@
 {
   "name": "@repo/api",
   "version": "0.0.1",
-  "description": "",
+  "description": "Nest transport and orchestration app for Solange Bernard.",
   "author": "",
   "private": true,
   "license": "UNLICENSED",

@@ -293,6 +293,8 @@ Examples:
 
 ## 21. Clean the workspace boundaries
 
+Official source of truth: [docs/workspace-boundaries.md](docs/workspace-boundaries.md)
+
 Respect your own rules:
 
 - `packages/contracts` = only shared contracts/types

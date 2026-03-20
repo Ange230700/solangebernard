@@ -1,6 +1,7 @@
 {
   "name": "@repo/client",
   "version": "0.0.0",
+  "description": "Angular workspace for the Solange Bernard web, desktop, and mobile clients.",
   "scripts": {
     "ng": "ng",
     "generate": "ng generate",
