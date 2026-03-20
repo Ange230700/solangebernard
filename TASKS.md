@@ -232,6 +232,8 @@ At minimum:
 
 ## 17. Define domain services
 
+Official source of truth: [docs/domain-services.md](docs/domain-services.md)
+
 Examples:
 
 - order placement service
