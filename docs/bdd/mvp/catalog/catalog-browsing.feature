@@ -8,6 +8,7 @@ Feature: Browse the public product catalog
     Given the catalog contains published products
     And draft products are hidden from customers
 
+  @critical
   Scenario: View the catalog landing page
     When I open the public catalog
     Then I should see a list of published products

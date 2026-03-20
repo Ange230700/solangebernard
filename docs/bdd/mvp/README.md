@@ -30,9 +30,9 @@ Use one consistent tag order on feature files:
 
 Current MVP features use feature-level tags to describe surface and area.
 
-Reserve these for scenario-level tagging when the repo reaches that task:
+Use scenario-level tags for execution priority:
 
-- `@critical`
-- `@smoke`
+- `@critical` for must-not-break MVP flows
+- `@smoke` for the smallest cross-surface confidence checks when needed
 
 Avoid one-off tags unless they are adopted across the whole BDD pack.

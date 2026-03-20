@@ -10,6 +10,7 @@ Feature: Back-office login
     And an active staff user exists with email "staff@solangebernard.com"
     And the password for "staff@solangebernard.com" is "SecurePass123!"
 
+  @critical
   Scenario: Successful admin login with valid credentials
     When I submit the login form with email "admin@solangebernard.com" and password "SecurePass123!"
     Then I should be authenticated successfully

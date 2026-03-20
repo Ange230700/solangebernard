@@ -10,6 +10,7 @@ Feature: Place an order from the catalog
       | size | color | stock |
       | M    | Grey  | 5     |
 
+  @critical
   Scenario: Place an order successfully
     When I open the product detail page for "Signature Set"
     And I choose size "M"
