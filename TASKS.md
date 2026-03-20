@@ -244,6 +244,9 @@ Examples:
 
 ## 18. Define value objects
 
+Official source of truth:
+[docs/domain-value-objects.md](docs/domain-value-objects.md)
+
 Examples:
 
 - `Money`
