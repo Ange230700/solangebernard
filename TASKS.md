@@ -66,6 +66,8 @@ Write down the actors explicitly:
 
 ## 3. Freeze the order statuses
 
+Official source of truth: [docs/order-statuses.md](docs/order-statuses.md)
+
 Choose the exact state machine and stop changing it every two days:
 
 - `PendingConfirmation`
