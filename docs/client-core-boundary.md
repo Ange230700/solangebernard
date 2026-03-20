@@ -45,8 +45,8 @@ logic.
 
 - `projects/core` may be consumed by `web`, `desktop`, and `mobile`.
 - `projects/core` should stay Angular-specific but platform-agnostic.
-- `projects/ui-web` remains the separate decision point for shared presentation
-  between `web` and `desktop`.
+- `projects/ui-web` is the separate shared-presentation library for `web` and
+  `desktop`.
 - `packages/domain` remains the place for framework-free business logic.
 
 ## Current Repo Alignment

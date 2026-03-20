@@ -64,6 +64,8 @@ The reverse directions are not allowed:
 - This task freezes the top-level workspace boundaries only.
 - The exact responsibility split for `projects/core` and `projects/ui-web`
   is intentionally handled by separate client-library decisions.
+- `projects/core` is the shared Angular-helper library; `projects/ui-web` is
+  the shared presentation library for `web` and `desktop` only.
 
 ## Practical Rule Of Thumb
 

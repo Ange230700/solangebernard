@@ -1,6 +1,7 @@
 {
   "name": "@repo/client-ui-web",
   "version": "0.0.1",
+  "description": "Shared presentation library for the Solange Bernard web and desktop clients.",
   "peerDependencies": {
     "@angular/common": "^21.2.0",
     "@angular/core": "^21.2.0"

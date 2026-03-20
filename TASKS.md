@@ -310,6 +310,9 @@ Official source of truth:
 
 ## 23. Decide if `projects/ui-web` is only for `web` and `desktop`
 
+Official source of truth:
+[docs/client-ui-web-boundary.md](docs/client-ui-web-boundary.md)
+
 It should **not** leak into `mobile`.
 
 ## 24. Define import boundaries
