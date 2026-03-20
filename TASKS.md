@@ -220,6 +220,8 @@ Examples:
 
 ## 16. Define aggregates
 
+Official source of truth: [docs/domain-aggregates.md](docs/domain-aggregates.md)
+
 At minimum:
 
 - `Product` aggregate
