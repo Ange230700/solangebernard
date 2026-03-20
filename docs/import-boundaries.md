@@ -78,14 +78,14 @@ future DB-layer shapes directly as client-facing responses.
 ## Current Limitation
 
 - The repo has chosen PostgreSQL as the target database.
-- The repo has not chosen an ORM or query layer yet.
+- The repo has chosen Prisma as the default ORM or query layer.
+- The repo has not created the real Prisma persistence module layout yet.
 - Because of that, the "API cannot dump DB models directly into clients" rule
-  is currently enforced as a pre-ORM guardrail:
-  controller files may not import common ORM packages or persistence-model path
-  patterns directly.
-- Once the repo chooses an ORM or query layer and adds a persistence module,
-  these rules should be extended to match the real persistence package and file
-  layout.
+  is currently enforced as a pre-persistence-layout guardrail:
+  controller files may not import `@prisma/client`, other ORM packages, or
+  persistence-model path patterns directly.
+- Once the repo adds a dedicated Prisma module and persistence layer, these
+  rules should be extended to match the real package and file layout.
 
 ## Related Decisions
 

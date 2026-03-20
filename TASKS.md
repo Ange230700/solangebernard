@@ -358,6 +358,8 @@ Pick one:
 
 Do not waste weeks debating it.
 
+Official source of truth: [docs/orm-choice.md](docs/orm-choice.md)
+
 ## 29. Model the tables/entities
 
 At minimum:

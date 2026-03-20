@@ -69,7 +69,7 @@ web / desktop / mobile UI
   -> HTTP
   -> apps/api
   -> @repo/domain
-  -> future PostgreSQL persistence layer
+  -> future PostgreSQL persistence layer via Prisma
 ```
 
 `@repo/contracts` defines the shared shapes that move across the API boundary.
@@ -109,7 +109,7 @@ The repo already enforces several architecture rules:
 The current architecture is intentionally incomplete in one major area:
 
 - the primary database choice is now frozen as PostgreSQL
-- the ORM or query layer is not frozen yet
+- Prisma is now the chosen ORM or query layer
 - the real persistence module layout does not exist yet
 
 Until those decisions are made, `apps/api` owns transport and orchestration,
@@ -120,6 +120,7 @@ rather than a current workspace even though the target database is now known.
 
 - `README.md`
 - `docs/database-choice.md`
+- `docs/orm-choice.md`
 - `docs/workspace-boundaries.md`
 - `docs/import-boundaries.md`
 - `docs/path-aliases.md`

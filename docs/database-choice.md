@@ -36,7 +36,7 @@ This applies to:
 ## What This Freezes Now
 
 - Future schema design should target PostgreSQL first.
-- Task 28 should choose an ORM or query layer that supports PostgreSQL well.
+- Task 28 has chosen Prisma as the default ORM or query layer.
 - Task 29 should model tables, constraints, and indexes with PostgreSQL as the
   target database.
 - The repo should not treat SQLite, MySQL, or another database as an equal
@@ -44,8 +44,7 @@ This applies to:
 
 ## What This Does Not Decide Yet
 
-- the ORM or query layer
-- the migration tool
+- the exact migration workflow
 - the local developer setup details
 - the staging or production hosting provider
 - the final persistence package or module layout inside `apps/api`
@@ -55,6 +54,7 @@ Those choices belong to later tasks.
 ## Related Decisions
 
 - [ARCHITECTURE.md](/C:/Users/USER/solangebernard/ARCHITECTURE.md)
+- [orm-choice.md](/C:/Users/USER/solangebernard/docs/orm-choice.md)
 - [workspace-boundaries.md](/C:/Users/USER/solangebernard/docs/workspace-boundaries.md)
 - [import-boundaries.md](/C:/Users/USER/solangebernard/docs/import-boundaries.md)
 - [domain-aggregates.md](/C:/Users/USER/solangebernard/docs/domain-aggregates.md)
