@@ -1,6 +1,7 @@
 {
   "name": "@repo/client-core",
   "version": "0.0.1",
+  "description": "UI-agnostic Angular helpers for the Solange Bernard client workspace.",
   "peerDependencies": {
     "@angular/common": "^21.2.0",
     "@angular/core": "^21.2.0"

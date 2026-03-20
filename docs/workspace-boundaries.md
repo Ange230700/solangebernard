@@ -63,7 +63,7 @@ The reverse directions are not allowed:
   Angular libraries.
 - This task freezes the top-level workspace boundaries only.
 - The exact responsibility split for `projects/core` and `projects/ui-web`
-  remains intentionally separate and should be handled by tasks 22 and 23.
+  is intentionally handled by separate client-library decisions.
 
 ## Practical Rule Of Thumb
 

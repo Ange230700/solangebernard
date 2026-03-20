@@ -305,6 +305,9 @@ Respect your own rules:
 
 ## 22. Decide if `projects/core` becomes shared app logic or UI-agnostic Angular helpers
 
+Official source of truth:
+[docs/client-core-boundary.md](docs/client-core-boundary.md)
+
 ## 23. Decide if `projects/ui-web` is only for `web` and `desktop`
 
 It should **not** leak into `mobile`.
