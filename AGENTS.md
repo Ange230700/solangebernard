@@ -17,6 +17,7 @@ This file exists to keep work consistent, trunk-friendly, and easy to ship.
 - Keep `main` releasable.
 - Prefer small, focused, validated changes.
 - Prefer short-lived topic branches over long-lived integration branches.
+- Prefer TDD for behavior changes when practical: `RED → GREEN → REFACTOR`.
 - Do not introduce extra process unless the repository clearly requires it.
 
 ---
@@ -100,6 +101,31 @@ When working from the backlog, issue list, or task list:
 - Do not continue new work on an old topic branch after its task is complete.
 - Do not leave stale temporary branches behind.
 - Do not merge unvalidated work back into `main`.
+
+## TDD cycle
+
+When implementing a task, prefer the smallest practical TDD loop:
+
+1. **RED**
+   - write or update the smallest relevant automated test that expresses the task or bug
+   - run the test and confirm it fails for the expected reason
+
+2. **GREEN**
+   - implement the smallest sane change that makes the failing test pass
+   - avoid broad refactors during this step
+
+3. **REFACTOR**
+   - improve code, names, duplication, and structure without changing behavior
+   - keep tests green while refactoring
+
+### TDD rules
+
+- Prefer small TDD loops over large test batches.
+- For bug fixes, reproduce the bug with a failing test before fixing it when practical.
+- Keep the test scope aligned to the selected task.
+- Do not mix unrelated behavior changes into the same `RED → GREEN → REFACTOR` cycle.
+- If a task cannot reasonably start with an automated test, say so clearly and use the smallest relevant validation instead.
+- After refactoring, rerun the relevant checks to confirm behavior is unchanged.
 
 ---
 
@@ -192,6 +218,8 @@ Before considering a task complete:
 - prefer targeted validation over random broad commands
 - if the change affects build, test, or config behavior, run the corresponding checks
 - if full validation cannot be completed, state clearly what was and was not verified
+- when using TDD, confirm the relevant test failed before the fix and passed after the fix
+- prefer the smallest relevant `RED → GREEN → REFACTOR` loop over large unscoped validation runs
 
 Examples of relevant validation:
 
