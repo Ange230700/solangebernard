@@ -78,6 +78,8 @@ Choose the exact state machine and stop changing it every two days:
 
 ## 4. Freeze the product lifecycle
 
+Official source of truth: [docs/product-lifecycle.md](docs/product-lifecycle.md)
+
 Define product statuses:
 
 - `Draft`
