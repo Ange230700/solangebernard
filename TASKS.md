@@ -171,6 +171,8 @@ Identify the must-not-break flows:
 
 ## 13. Derive a traceability sheet
 
+Derived sheet: [docs/bdd/mvp/traceability-sheet.md](docs/bdd/mvp/traceability-sheet.md)
+
 Map each feature/scenario to:
 
 - domain object

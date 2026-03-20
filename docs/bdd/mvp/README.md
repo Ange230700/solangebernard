@@ -36,3 +36,8 @@ Use scenario-level tags for execution priority:
 - `@smoke` for the smallest cross-surface confidence checks when needed
 
 Avoid one-off tags unless they are adopted across the whole BDD pack.
+
+## Related Docs
+
+- `traceability-sheet.md` maps scenarios to domain objects, API endpoints,
+  frontend screens, and test types.
