@@ -92,6 +92,16 @@ export class PasswordResetTokensService {
         },
       });
 
+      await transaction.adminSession.updateMany({
+        where: {
+          adminUserId: passwordResetToken.adminUserId,
+          invalidatedAt: null,
+        },
+        data: {
+          invalidatedAt: at,
+        },
+      });
+
       return mapStoredAdminUser(adminUser);
     });
   }

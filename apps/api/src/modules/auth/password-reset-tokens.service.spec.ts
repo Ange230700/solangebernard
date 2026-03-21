@@ -84,6 +84,9 @@ describe('PasswordResetTokensService', () => {
       createdAt: new Date('2026-03-21T16:00:00.000Z'),
       updatedAt: new Date('2026-03-21T17:30:00.000Z'),
     });
+    const invalidateSessions = jest.fn().mockResolvedValue({
+      count: 2,
+    });
     type MockTransaction = {
       passwordResetToken: {
         findFirst: typeof findFirst;
@@ -91,6 +94,9 @@ describe('PasswordResetTokensService', () => {
       };
       adminUser: {
         update: typeof update;
+      };
+      adminSession: {
+        updateMany: typeof invalidateSessions;
       };
     };
     const prismaService = {
@@ -105,6 +111,9 @@ describe('PasswordResetTokensService', () => {
               },
               adminUser: {
                 update,
+              },
+              adminSession: {
+                updateMany: invalidateSessions,
               },
             }),
         ),
@@ -165,6 +174,15 @@ describe('PasswordResetTokensService', () => {
       },
       data: {
         passwordHash: 'next-password-hash',
+      },
+    });
+    expect(invalidateSessions).toHaveBeenCalledWith({
+      where: {
+        adminUserId: 'admin_user_1',
+        invalidatedAt: null,
+      },
+      data: {
+        invalidatedAt: new Date('2026-03-21T17:30:00.000Z'),
       },
     });
   });
