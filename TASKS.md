@@ -412,6 +412,9 @@ Official source of truth:
 
 ## 34. Seed minimum development data
 
+Official source of truth:
+[docs/development-seed-data.md](docs/development-seed-data.md)
+
 Seed:
 
 - admin user

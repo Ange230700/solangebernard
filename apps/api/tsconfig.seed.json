@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "declaration": false,
+    "incremental": false,
+    "module": "es2022",
+    "moduleResolution": "bundler",
+    "outDir": "./.seed-build",
+    "rootDir": ".",
+    "sourceMap": false
+  },
+  "include": ["prisma/seed.ts", "generated/prisma/**/*.ts"]
+}

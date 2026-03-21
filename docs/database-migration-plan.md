@@ -81,7 +81,8 @@ Recommended command flow:
 
 ## What This Plan Does Not Cover Yet
 
-- a seed script or seeded reference data
+- the exact seeded dataset itself, which is defined separately in
+  `docs/development-seed-data.md`
 - CI or deployment automation that runs migrations automatically
 - backup, restore, or rollback mechanics
 - production-specific operator runbooks
@@ -118,6 +119,7 @@ Those choices belong to later tasks.
 - `docs/database-choice.md`
 - `docs/orm-choice.md`
 - `docs/branching-and-environments.md`
+- `docs/development-seed-data.md`
 - `docs/domain-glossary.md`
 - `docs/domain-invariants.md`
 - `docs/deletion-rules.md`
