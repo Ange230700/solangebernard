@@ -101,6 +101,9 @@ When working from the backlog, issue list, or task list:
 - Do not continue new work on an old topic branch after its task is complete.
 - Do not leave stale temporary branches behind.
 - Do not merge unvalidated work back into `main`.
+- Unless explicitly told otherwise, complete the full Git cycle after validated work:
+  merge the topic branch into `main`, push `main`, and delete the merged branch
+  locally and on the remote when it exists.
 
 ## TDD cycle
 
@@ -139,6 +142,9 @@ When implementing a task, prefer the smallest practical TDD loop:
 - Update `docs/branching-and-environments.md` in the same change if branching or environment behavior changes materially.
 - Prefer task-sized changes over broad refactors unless the task clearly requires broader work.
 - Say directly when infrastructure, environment behavior, or release assumptions are missing or underdefined.
+- Treat merge-to-`main` and merged-branch cleanup as the default finish state, not
+  as separate optional follow-up steps, unless the maintainer asks to keep the
+  branch.
 
 ---
 

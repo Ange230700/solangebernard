@@ -30,19 +30,19 @@ preserve historical records, and allow limited technical cleanup.
 
 ## Decision Summary
 
-| Record               | MVP delete rule                             | Preferred action                                        | Notes                                                       |
-| -------------------- | ------------------------------------------- | ------------------------------------------------------- | ----------------------------------------------------------- |
-| `AdminUser`          | no hard delete in normal MVP flows          | deactivate via `isActive = false`                       | preserve auth and audit references                          |
-| `AdminSession`       | hard delete allowed only for technical cleanup | invalidate first, then purge expired or invalidated rows later | transient auth record, not durable business history         |
-| `PasswordResetToken` | hard delete allowed only for technical cleanup | consume or expire first, then purge spent rows later    | transient auth record, not durable business history         |
-| `Product`            | no hard delete in MVP                       | unpublish back to `Draft`                               | no generic soft-delete column or archive status             |
-| `ProductVariant`     | no general delete flow in MVP               | edit draft data, set stock to `0`, or unpublish product | keep order and inventory references stable                  |
-| `ProductMedia`       | hard delete allowed                         | remove the media row and backing file                   | published products must still satisfy publish invariants    |
-| `InventoryAdjustment`| never delete                                | append-only history                                     | preserve the inventory audit trail                          |
-| `Order`              | never delete                                | cancel instead of delete                                | preserve customer and back-office history                   |
-| `OrderItem`          | never delete                                | keep with its parent `Order`                            | preserve order-time snapshot meaning                        |
-| `Notification`       | never delete                                | update status or retry instead of delete                | preserve operational customer-communication history         |
-| `NotificationAttempt`| never delete                                | append another attempt instead of deleting              | preserve retry and provider-debug history                   |
+| Record                | MVP delete rule                                | Preferred action                                               | Notes                                                    |
+| --------------------- | ---------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------- |
+| `AdminUser`           | no hard delete in normal MVP flows             | deactivate via `isActive = false`                              | preserve auth and audit references                       |
+| `AdminSession`        | hard delete allowed only for technical cleanup | invalidate first, then purge expired or invalidated rows later | transient auth record, not durable business history      |
+| `PasswordResetToken`  | hard delete allowed only for technical cleanup | consume or expire first, then purge spent rows later           | transient auth record, not durable business history      |
+| `Product`             | no hard delete in MVP                          | unpublish back to `Draft`                                      | no generic soft-delete column or archive status          |
+| `ProductVariant`      | no general delete flow in MVP                  | edit draft data, set stock to `0`, or unpublish product        | keep order and inventory references stable               |
+| `ProductMedia`        | hard delete allowed                            | remove the media row and backing file                          | published products must still satisfy publish invariants |
+| `InventoryAdjustment` | never delete                                   | append-only history                                            | preserve the inventory audit trail                       |
+| `Order`               | never delete                                   | cancel instead of delete                                       | preserve customer and back-office history                |
+| `OrderItem`           | never delete                                   | keep with its parent `Order`                                   | preserve order-time snapshot meaning                     |
+| `Notification`        | never delete                                   | update status or retry instead of delete                       | preserve operational customer-communication history      |
+| `NotificationAttempt` | never delete                                   | append another attempt instead of deleting                     | preserve retry and provider-debug history                |
 
 ## Back-Office Identity Rules
 

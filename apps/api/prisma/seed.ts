@@ -66,7 +66,8 @@ const seedIds = {
     order1001Ready: 'seed-notification-order-1001-ready',
   },
   notificationAttempts: {
-    order1001ConfirmedSent: 'seed-notification-attempt-order-1001-confirmed-sent',
+    order1001ConfirmedSent:
+      'seed-notification-attempt-order-1001-confirmed-sent',
   },
 } as const;
 
@@ -156,7 +157,8 @@ async function seedProducts() {
     where: { id: seedIds.products.classicBlackDress },
     update: {
       name: 'Classic Black Dress',
-      description: 'Published dress for catalog browsing and category filtering.',
+      description:
+        'Published dress for catalog browsing and category filtering.',
       category: 'Dresses',
       priceAmount: 28000,
       status: 'Published',
@@ -164,7 +166,8 @@ async function seedProducts() {
     create: {
       id: seedIds.products.classicBlackDress,
       name: 'Classic Black Dress',
-      description: 'Published dress for catalog browsing and category filtering.',
+      description:
+        'Published dress for catalog browsing and category filtering.',
       category: 'Dresses',
       priceAmount: 28000,
       status: 'Published',
@@ -175,7 +178,8 @@ async function seedProducts() {
     where: { id: seedIds.products.linenTwoPiece },
     update: {
       name: 'Linen Two-Piece',
-      description: 'Lightweight set kept in draft for back-office editing flows.',
+      description:
+        'Lightweight set kept in draft for back-office editing flows.',
       category: 'Sets',
       priceAmount: 35000,
       status: 'Draft',
@@ -183,7 +187,8 @@ async function seedProducts() {
     create: {
       id: seedIds.products.linenTwoPiece,
       name: 'Linen Two-Piece',
-      description: 'Lightweight set kept in draft for back-office editing flows.',
+      description:
+        'Lightweight set kept in draft for back-office editing flows.',
       category: 'Sets',
       priceAmount: 35000,
       status: 'Draft',
