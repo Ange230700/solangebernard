@@ -5,13 +5,18 @@ import {
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
 import { configureApp } from './app.setup';
+import { ApiConfigService } from './config/api-config.service';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter(),
   );
-  configureApp(app);
-  await app.listen(process.env.PORT ?? 3000, '0.0.0.0');
+  const apiConfig = app.get(ApiConfigService);
+
+  configureApp(app, {
+    frontendOrigins: apiConfig.frontendOrigins,
+  });
+  await app.listen(apiConfig.port, '0.0.0.0');
 }
 void bootstrap();

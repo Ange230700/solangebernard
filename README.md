@@ -67,6 +67,18 @@ with matching local credentials, port, and database name.
 - API database env example: `apps/api/.env.example`
 - Local Docker database stack: `compose.yml`
 
+## API Configuration
+
+- API runtime configuration source of truth: `docs/api-configuration.md`
+- Copy `apps/api/.env.example` to `apps/api/.env` for local API work
+- Required API runtime env vars now include:
+  `APP_ENV`,
+  `DATABASE_URL`,
+  `AUTH_SECRET`,
+  `NOTIFICATION_PROVIDER`,
+  `FRONTEND_ORIGINS`
+- `PORT` defaults to `3000` when omitted
+
 ## Boundaries
 
 - Architecture source of truth: `ARCHITECTURE.md`

@@ -6,8 +6,18 @@ import { GlobalExceptionFilter } from './common/filters/global-exception.filter'
 
 const VALIDATION_FAILED_CODE = 'ValidationFailed' as const;
 
-export function configureApp(app: INestApplication): void {
-  app.enableCors();
+export interface AppSetupOptions {
+  frontendOrigins?: string[];
+}
+
+export function configureApp(
+  app: INestApplication,
+  options: AppSetupOptions = {},
+): void {
+  app.enableCors({
+    credentials: true,
+    origin: options.frontendOrigins ?? true,
+  });
   app.useGlobalPipes(
     new ValidationPipe({
       exceptionFactory: (errors) =>

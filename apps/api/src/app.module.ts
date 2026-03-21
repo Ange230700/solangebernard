@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ApiConfigModule } from './config/api-config.module';
 import { AdminUsersModule } from './modules/admin-users/admin-users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { HealthModule } from './modules/health/health.module';
@@ -9,6 +10,7 @@ import { ProductsModule } from './modules/products/products.module';
 
 @Module({
   imports: [
+    ApiConfigModule,
     HealthModule,
     AuthModule,
     AdminUsersModule,
