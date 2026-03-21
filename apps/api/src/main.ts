@@ -4,13 +4,14 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
+import { configureApp } from './app.setup';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter(),
   );
-  app.enableCors();
+  configureApp(app);
   await app.listen(process.env.PORT ?? 3000, '0.0.0.0');
 }
 void bootstrap();

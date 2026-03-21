@@ -3,6 +3,7 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
+import { configureApp } from './../src/app.setup';
 import { AppModule } from './../src/app.module';
 
 describe('Health endpoint (e2e)', () => {
@@ -16,6 +17,7 @@ describe('Health endpoint (e2e)', () => {
     app = moduleFixture.createNestApplication<NestFastifyApplication>(
       new FastifyAdapter(),
     );
+    configureApp(app);
     await app.init();
     await app.getHttpAdapter().getInstance().ready();
   });
