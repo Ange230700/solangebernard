@@ -1,7 +1,4 @@
-export type EntityId = string & {
-  readonly __brand: 'EntityId';
-};
-
+export * from './shared.js';
 export * from './auth/index.js';
 export * from './health/index.js';
 export * from './inventory/index.js';
