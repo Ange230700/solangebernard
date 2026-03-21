@@ -75,16 +75,23 @@ Assume the environment model is:
 When working from the backlog, issue list, or task list:
 
 1. Select exactly one task.
-2. Update local `main`.
-3. Create a fresh short-lived branch from the latest `main`.
-4. Name the branch according to the task type and task purpose.
-5. Switch to that branch before making changes.
-6. Keep the scope limited to the selected task.
-7. Implement the task.
-8. Validate the task with the relevant checks.
-9. Integrate the validated work back into `main`.
-10. Delete the temporary branch after integration.
-11. Repeat the same cycle for the next task.
+2. If the task is tracked in GitHub Projects and access is available, identify the
+   matching project item before changing code.
+3. Update local `main`.
+4. Create a fresh short-lived branch from the latest `main`.
+5. Name the branch according to the task type and task purpose.
+6. Switch to that branch before making changes.
+7. If the task is tracked in GitHub Projects and access is available, move the
+   matching project item to `In Progress` when work starts.
+8. Keep the scope limited to the selected task.
+9. Implement the task.
+10. Validate the task with the relevant checks.
+11. Integrate the validated work back into `main`.
+12. Delete the temporary branch after integration.
+13. If the task is tracked in GitHub Projects and access is available, move the
+   matching project item to `Done` after the validated work has been merged and
+   pushed, or leave it in `In Progress` and say why if the task is only partial.
+14. Repeat the same cycle for the next task.
 
 ### Branch examples
 
@@ -104,6 +111,25 @@ When working from the backlog, issue list, or task list:
 - Unless explicitly told otherwise, complete the full Git cycle after validated work:
   merge the topic branch into `main`, push `main`, and delete the merged branch
   locally and on the remote when it exists.
+
+## GitHub Projects handling
+
+When the repository uses a GitHub Project backlog and access is available:
+
+- treat the matching GitHub Project item as part of the working context for the
+  selected task
+- use the GitHub CLI when practical to inspect and update the project item
+- keep project status aligned with real repo state instead of leaving stale `Todo`
+  items behind
+- move the item to `In Progress` when implementation starts
+- move the item to `Done` only after validation, merge to `main`, and push are
+  complete
+- if the work is partial, blocked, or intentionally split across tasks, leave the
+  item in `In Progress` and state the reason clearly
+- do not bulk rewrite the project backlog or create new project items unless the
+  maintainer asks for backlog cleanup or backlog expansion
+- say clearly when GitHub Project access is missing, unsupported, or blocked by
+  authentication so project updates are not silently skipped
 
 ## TDD cycle
 
@@ -145,6 +171,8 @@ When implementing a task, prefer the smallest practical TDD loop:
 - Treat merge-to-`main` and merged-branch cleanup as the default finish state, not
   as separate optional follow-up steps, unless the maintainer asks to keep the
   branch.
+- Keep GitHub Project item status aligned with the actual task state when the
+  repo uses a project backlog and access is available.
 
 ---
 
@@ -280,5 +308,6 @@ Work is done only if a maintainer can clearly answer:
 - why it changed
 - how it was validated
 - how it fits the trunk-based workflow
+- whether the matching GitHub Project item was updated or why it was not
 - whether it has been integrated back into `main`
 - whether the temporary task branch can be deleted or has already been deleted
