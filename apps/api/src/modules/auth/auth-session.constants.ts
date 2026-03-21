@@ -1,0 +1,3 @@
+export const AUTH_SESSION_COOKIE_NAME = 'solange_admin_session';
+export const AUTH_SESSION_DURATION_MS = 12 * 60 * 60 * 1000;
+export const AUTH_SESSION_DURATION_SECONDS = AUTH_SESSION_DURATION_MS / 1000;

@@ -13,6 +13,14 @@ export class PrismaClient {
     },
   };
 
+  adminSession = {
+    create: () => {
+      throw new Error(
+        'PrismaClient test mock adminSession.create() was called unexpectedly.',
+      );
+    },
+  };
+
   constructor() {}
 
   async $disconnect(): Promise<void> {}

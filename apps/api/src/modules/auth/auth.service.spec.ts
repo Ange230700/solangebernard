@@ -26,6 +26,13 @@ describe('AuthService', () => {
     const adminUsersService = {
       findByEmail: jest.fn().mockResolvedValue(activeAdminUser),
     };
+    const authSessionsService = {
+      create: jest.fn().mockResolvedValue({
+        token: 'raw-session-token',
+        issuedAt: new Date('2026-03-21T17:30:00.000Z'),
+        expiresAt: new Date('2026-03-22T05:30:00.000Z'),
+      }),
+    };
     const passwordHashingService = {
       verifyPassword: jest.fn().mockResolvedValue(true),
     };
@@ -36,6 +43,9 @@ describe('AuthService', () => {
       passwordHashingService as unknown as ConstructorParameters<
         typeof AuthService
       >[1],
+      authSessionsService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[2],
     );
 
     await expect(
@@ -46,6 +56,7 @@ describe('AuthService', () => {
     ).resolves.toEqual({
       user: activeAdminUser,
       session: {
+        token: 'raw-session-token',
         expiresAt: new Date('2026-03-22T05:30:00.000Z'),
         issuedAt: new Date('2026-03-21T17:30:00.000Z'),
       },
@@ -57,11 +68,15 @@ describe('AuthService', () => {
       'SecurePass123!',
       activeAdminUser.passwordHash,
     );
+    expect(authSessionsService.create).toHaveBeenCalledWith('admin_user_1');
   });
 
   it('rejects unknown email addresses as invalid credentials', async () => {
     const adminUsersService = {
       findByEmail: jest.fn().mockResolvedValue(null),
+    };
+    const authSessionsService = {
+      create: jest.fn(),
     };
     const passwordHashingService = {
       verifyPassword: jest.fn(),
@@ -73,6 +88,9 @@ describe('AuthService', () => {
       passwordHashingService as unknown as ConstructorParameters<
         typeof AuthService
       >[1],
+      authSessionsService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[2],
     );
 
     const exception = await service
@@ -88,12 +106,16 @@ describe('AuthService', () => {
       code: 'InvalidCredentials',
       message: 'Invalid credentials',
     });
+    expect(authSessionsService.create).not.toHaveBeenCalled();
     expect(passwordHashingService.verifyPassword).not.toHaveBeenCalled();
   });
 
   it('rejects wrong passwords as invalid credentials', async () => {
     const adminUsersService = {
       findByEmail: jest.fn().mockResolvedValue(activeAdminUser),
+    };
+    const authSessionsService = {
+      create: jest.fn(),
     };
     const passwordHashingService = {
       verifyPassword: jest.fn().mockResolvedValue(false),
@@ -105,6 +127,9 @@ describe('AuthService', () => {
       passwordHashingService as unknown as ConstructorParameters<
         typeof AuthService
       >[1],
+      authSessionsService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[2],
     );
 
     const exception = await service
@@ -123,6 +148,7 @@ describe('AuthService', () => {
       'WrongPass999!',
       activeAdminUser.passwordHash,
     );
+    expect(authSessionsService.create).not.toHaveBeenCalled();
   });
 
   it('rejects disabled accounts with the shared account-disabled error', async () => {
@@ -135,6 +161,9 @@ describe('AuthService', () => {
     const adminUsersService = {
       findByEmail: jest.fn().mockResolvedValue(disabledAdminUser),
     };
+    const authSessionsService = {
+      create: jest.fn(),
+    };
     const passwordHashingService = {
       verifyPassword: jest.fn(),
     };
@@ -145,6 +174,9 @@ describe('AuthService', () => {
       passwordHashingService as unknown as ConstructorParameters<
         typeof AuthService
       >[1],
+      authSessionsService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[2],
     );
 
     const exception = await service
@@ -160,6 +192,7 @@ describe('AuthService', () => {
       code: 'AccountDisabled',
       message: 'Account disabled',
     });
+    expect(authSessionsService.create).not.toHaveBeenCalled();
     expect(passwordHashingService.verifyPassword).not.toHaveBeenCalled();
   });
 });

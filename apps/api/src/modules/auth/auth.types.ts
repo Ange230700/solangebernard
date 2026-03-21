@@ -3,6 +3,7 @@ import type { StoredAdminUser } from '../admin-users/admin-users.types';
 export interface AuthenticatedSessionResult {
   user: StoredAdminUser;
   session: {
+    token: string;
     issuedAt: Date;
     expiresAt: Date;
   };

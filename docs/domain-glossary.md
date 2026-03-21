@@ -121,6 +121,8 @@ contracts, domain package, persistence model, and UI copy.
 - server-managed authenticated back-office session for one `AdminUser`
 - uses an HTTP cookie transport in MVP instead of returning a bearer token in
   response bodies
+- persists only a hashed session token server-side while the raw cookie value
+  stays client-facing
 - is time-bounded and may also be invalidated explicitly on logout or password
   reset
 - is required for protected back-office routes

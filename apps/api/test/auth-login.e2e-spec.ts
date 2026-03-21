@@ -4,9 +4,11 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
+import { ApiConfigService } from '../src/config/api-config.service';
 import type { StoredAdminUser } from '../src/modules/admin-users/admin-users.types';
 import { AdminUsersService } from '../src/modules/admin-users/admin-users.service';
 import { AuthController } from '../src/modules/auth/auth.controller';
+import { AuthSessionsService } from '../src/modules/auth/auth-sessions.service';
 import { AuthService } from '../src/modules/auth/auth.service';
 import { PasswordHashingService } from '../src/modules/auth/password-hashing.service';
 import { configureApp } from '../src/app.setup';
@@ -51,8 +53,14 @@ describe('Auth login endpoint (e2e)', () => {
   let adminUsersService: {
     findByEmail: jest.Mock;
   };
+  let authSessionsService: {
+    create: jest.Mock;
+  };
   let passwordHashingService: {
     verifyPassword: jest.Mock;
+  };
+  let apiConfigService: {
+    appEnv: 'local';
   };
   let app: NestFastifyApplication;
 
@@ -60,8 +68,14 @@ describe('Auth login endpoint (e2e)', () => {
     adminUsersService = {
       findByEmail: jest.fn(),
     };
+    authSessionsService = {
+      create: jest.fn(),
+    };
     passwordHashingService = {
       verifyPassword: jest.fn(),
+    };
+    apiConfigService = {
+      appEnv: 'local',
     };
 
     @Module({
@@ -75,6 +89,14 @@ describe('Auth login endpoint (e2e)', () => {
         {
           provide: PasswordHashingService,
           useValue: passwordHashingService,
+        },
+        {
+          provide: AuthSessionsService,
+          useValue: authSessionsService,
+        },
+        {
+          provide: ApiConfigService,
+          useValue: apiConfigService,
         },
       ],
     })
@@ -99,6 +121,11 @@ describe('Auth login endpoint (e2e)', () => {
   it('authenticates valid credentials successfully', async () => {
     adminUsersService.findByEmail.mockResolvedValue(activeAdminUser);
     passwordHashingService.verifyPassword.mockResolvedValue(true);
+    authSessionsService.create.mockResolvedValue({
+      token: 'session-token-123',
+      issuedAt: new Date('2026-03-21T17:30:00.000Z'),
+      expiresAt: new Date('2026-03-22T05:30:00.000Z'),
+    });
 
     const response = await app.inject({
       method: 'POST',
@@ -130,6 +157,24 @@ describe('Auth login endpoint (e2e)', () => {
     expect(Number.isNaN(issuedAt.getTime())).toBe(false);
     expect(Number.isNaN(expiresAt.getTime())).toBe(false);
     expect(expiresAt.getTime() - issuedAt.getTime()).toBe(12 * 60 * 60 * 1000);
+    expect(readSetCookieHeader(response.headers['set-cookie'])).toContain(
+      'solange_admin_session=session-token-123',
+    );
+    expect(readSetCookieHeader(response.headers['set-cookie'])).toContain(
+      'HttpOnly',
+    );
+    expect(readSetCookieHeader(response.headers['set-cookie'])).toContain(
+      'SameSite=Lax',
+    );
+    expect(readSetCookieHeader(response.headers['set-cookie'])).toContain(
+      'Path=/',
+    );
+    expect(readSetCookieHeader(response.headers['set-cookie'])).toContain(
+      'Max-Age=43200',
+    );
+    expect(readSetCookieHeader(response.headers['set-cookie'])).not.toContain(
+      'Secure',
+    );
   });
 
   it('returns invalid-credentials for unknown email addresses', async () => {
@@ -213,4 +258,16 @@ describe('Auth login endpoint (e2e)', () => {
 
 function parseJsonBody<T>(body: string): T {
   return JSON.parse(body) as T;
+}
+
+function readSetCookieHeader(
+  setCookieHeader: string | string[] | undefined,
+): string {
+  if (!setCookieHeader) {
+    return '';
+  }
+
+  return Array.isArray(setCookieHeader)
+    ? setCookieHeader.join('; ')
+    : setCookieHeader;
 }

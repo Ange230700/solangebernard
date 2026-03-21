@@ -5,11 +5,11 @@ import {
 } from '@nestjs/common';
 import type { LoginRequest } from '@repo/contracts';
 import { AdminUsersService } from '../admin-users/admin-users.service';
+import { AuthSessionsService } from './auth-sessions.service';
 import { PasswordHashingService } from './password-hashing.service';
 import type { AuthenticatedSessionResult } from './auth.types';
 
 const ACCOUNT_DISABLED_CODE = 'AccountDisabled' as const;
-const AUTH_SESSION_DURATION_MS = 12 * 60 * 60 * 1000;
 const INVALID_CREDENTIALS_CODE = 'InvalidCredentials' as const;
 
 @Injectable()
@@ -17,6 +17,7 @@ export class AuthService {
   constructor(
     private readonly adminUsersService: AdminUsersService,
     private readonly passwordHashingService: PasswordHashingService,
+    private readonly authSessionsService: AuthSessionsService,
   ) {}
 
   async login(request: LoginRequest): Promise<AuthenticatedSessionResult> {
@@ -49,14 +50,11 @@ export class AuthService {
       });
     }
 
-    const issuedAt = new Date();
+    const session = await this.authSessionsService.create(user.id);
 
     return {
       user,
-      session: {
-        issuedAt,
-        expiresAt: new Date(issuedAt.getTime() + AUTH_SESSION_DURATION_MS),
-      },
+      session,
     };
   }
 }

@@ -14,6 +14,7 @@ describe('mapLoginResponse', () => {
           updatedAt: new Date('2026-03-21T16:00:00.000Z'),
         },
         session: {
+          token: 'raw-session-token',
           issuedAt: new Date('2026-03-21T17:30:00.000Z'),
           expiresAt: new Date('2026-03-22T05:30:00.000Z'),
         },
