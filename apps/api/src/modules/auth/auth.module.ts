@@ -6,6 +6,7 @@ import { AuthSessionsRepository } from './auth-sessions.repository';
 import { AuthSessionsService } from './auth-sessions.service';
 import { AuthService } from './auth.service';
 import { PasswordHashingService } from './password-hashing.service';
+import { RoleGuard } from './role.guard';
 import { PrismaModule } from '../../persistence/prisma.module';
 
 @Module({
@@ -17,12 +18,14 @@ import { PrismaModule } from '../../persistence/prisma.module';
     AuthSessionsService,
     AuthService,
     PasswordHashingService,
+    RoleGuard,
   ],
   exports: [
     AuthGuard,
     AuthSessionsService,
     AuthService,
     PasswordHashingService,
+    RoleGuard,
   ],
 })
 export class AuthModule {}
