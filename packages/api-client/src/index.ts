@@ -1,4 +1,4 @@
-import type { HealthResponse } from '@repo/contracts';
+import type { HealthResponse } from '@repo/contracts/health';
 
 export interface ApiClientOptions {
   baseUrl: string;
