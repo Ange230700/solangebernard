@@ -39,21 +39,25 @@ This applies to:
 - Task 28 has chosen Prisma as the default ORM or query layer.
 - Task 29 should model tables, constraints, and indexes with PostgreSQL as the
   target database.
+- Task 33 should commit PostgreSQL migration artifacts from the Prisma schema
+  under `apps/api/prisma/migrations`.
 - The repo should not treat SQLite, MySQL, or another database as an equal
   first-class MVP target.
 
 ## What This Does Not Decide Yet
 
-- the exact migration workflow
-- the local developer setup details
+- the local developer setup details beyond the initial migration plan
 - the staging or production hosting provider
 - the final persistence package or module layout inside `apps/api`
+- the long-term automation that will run committed migrations in shared
+  environments
 
 Those choices belong to later tasks.
 
 ## Related Decisions
 
 - [ARCHITECTURE.md](/C:/Users/USER/solangebernard/ARCHITECTURE.md)
+- [database-migration-plan.md](/C:/Users/USER/solangebernard/docs/database-migration-plan.md)
 - [orm-choice.md](/C:/Users/USER/solangebernard/docs/orm-choice.md)
 - [workspace-boundaries.md](/C:/Users/USER/solangebernard/docs/workspace-boundaries.md)
 - [import-boundaries.md](/C:/Users/USER/solangebernard/docs/import-boundaries.md)

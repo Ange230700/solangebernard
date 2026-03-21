@@ -30,6 +30,8 @@ Prisma is the default and only planned ORM or query layer for the MVP.
 - Task 29 should model the initial persistence layer with Prisma.
 - The default application persistence path should be
   `apps/api` -> Prisma -> PostgreSQL.
+- Task 33 should use committed Prisma migration files under
+  `apps/api/prisma/migrations` as the initial migration artifact path.
 - The repo should not introduce Drizzle, Kysely, or raw SQL as a parallel
   first-class default persistence layer for the MVP.
 - Controllers should keep depending on contracts and services rather than on
@@ -40,7 +42,8 @@ Prisma is the default and only planned ORM or query layer for the MVP.
 - the exact Prisma file or module layout under `apps/api`
 - whether the API uses repositories, services, or a thin persistence adapter
   around Prisma
-- migration naming conventions
+- any broader migration naming convention beyond the initial
+  `init_mvp_schema` baseline plan
 - seed scripts and local developer bootstrap details
 - whether targeted raw SQL is ever justified for isolated later edge cases
 
@@ -49,6 +52,7 @@ Those choices belong to later implementation tasks.
 ## Related Decisions
 
 - [database-choice.md](/C:/Users/USER/solangebernard/docs/database-choice.md)
+- [database-migration-plan.md](/C:/Users/USER/solangebernard/docs/database-migration-plan.md)
 - [ARCHITECTURE.md](/C:/Users/USER/solangebernard/ARCHITECTURE.md)
 - [workspace-boundaries.md](/C:/Users/USER/solangebernard/docs/workspace-boundaries.md)
 - [import-boundaries.md](/C:/Users/USER/solangebernard/docs/import-boundaries.md)

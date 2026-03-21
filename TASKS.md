@@ -407,6 +407,9 @@ MVP recommendation:
 
 ## 33. Write the initial database migration plan
 
+Official source of truth:
+[docs/database-migration-plan.md](docs/database-migration-plan.md)
+
 ## 34. Seed minimum development data
 
 Seed:
