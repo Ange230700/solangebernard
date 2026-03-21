@@ -47,6 +47,22 @@
     "./products": {
       "types": "./dist/products/index.d.ts",
       "import": "./dist/products/index.js"
+    },
+    "./products/public": {
+      "types": "./dist/products/public/index.d.ts",
+      "import": "./dist/products/public/index.js"
+    },
+    "./products/protected": {
+      "types": "./dist/products/protected/index.d.ts",
+      "import": "./dist/products/protected/index.js"
+    },
+    "./orders/public": {
+      "types": "./dist/orders/public/index.d.ts",
+      "import": "./dist/orders/public/index.js"
+    },
+    "./orders/protected": {
+      "types": "./dist/orders/protected/index.d.ts",
+      "import": "./dist/orders/protected/index.js"
     }
   },
   "types": "./dist/index.d.ts",
