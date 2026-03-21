@@ -10,6 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import type {
+  ConfirmPasswordResetResponse,
   CurrentUserResponse,
   LoginResponse,
   LogoutResponse,
@@ -23,7 +24,12 @@ import {
 } from './auth-session-cookie';
 import { AuthGuard } from './auth.guard';
 import type { AuthenticatedAdminRequest } from './auth-request.types';
-import { mapCurrentUserResponse, mapLoginResponse } from './auth.response';
+import {
+  mapConfirmPasswordResetResponse,
+  mapCurrentUserResponse,
+  mapLoginResponse,
+} from './auth.response';
+import { ConfirmPasswordResetRequestDto } from './confirm-password-reset.request';
 import { LoginRequestDto } from './login.request';
 import { RequestPasswordResetRequestDto } from './request-password-reset.request';
 import { AuthService } from './auth.service';
@@ -84,6 +90,16 @@ export class AuthController {
     return {
       accepted: true,
     };
+  }
+
+  @Post('password-reset/confirm')
+  @HttpCode(HttpStatus.OK)
+  async confirmPasswordReset(
+    @Body() request: ConfirmPasswordResetRequestDto,
+  ): Promise<ConfirmPasswordResetResponse> {
+    const updatedUser = await this.authService.confirmPasswordReset(request);
+
+    return mapConfirmPasswordResetResponse(updatedUser);
   }
 
   @Get('current-user')

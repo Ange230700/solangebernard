@@ -1,4 +1,8 @@
-import { ForbiddenException, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import type { StoredAdminUser } from '../admin-users/admin-users.types';
 import { AuthService } from './auth.service';
 
@@ -385,5 +389,160 @@ describe('AuthService', () => {
       'disabled@solangebernard.com',
     );
     expect(passwordResetTokensService.create).not.toHaveBeenCalled();
+  });
+
+  it('confirms password reset for a valid token and strong replacement password', async () => {
+    const updatedAdminUser: StoredAdminUser = {
+      ...activeAdminUser,
+      passwordHash: 'next-password-hash',
+      updatedAt: new Date('2026-03-21T18:30:00.000Z'),
+    };
+    const adminUsersService = {
+      findByEmail: jest.fn(),
+    };
+    const authSessionsService = {
+      create: jest.fn(),
+      invalidateById: jest.fn(),
+    };
+    const passwordResetTokensService = {
+      create: jest.fn(),
+      consumeAndUpdatePassword: jest.fn().mockResolvedValue(updatedAdminUser),
+    };
+    const passwordHashingService = {
+      verifyPassword: jest.fn(),
+      hashPassword: jest.fn().mockResolvedValue('next-password-hash'),
+    };
+    const service = new AuthService(
+      adminUsersService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[0],
+      passwordHashingService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[1],
+      authSessionsService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[2],
+      passwordResetTokensService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[3],
+    );
+
+    await expect(
+      service.confirmPasswordReset({
+        token: 'valid-password-reset-token',
+        newPassword: 'NewSecurePass123!',
+      }),
+    ).resolves.toEqual(updatedAdminUser);
+    expect(passwordHashingService.hashPassword).toHaveBeenCalledWith(
+      'NewSecurePass123!',
+    );
+    expect(
+      passwordResetTokensService.consumeAndUpdatePassword,
+    ).toHaveBeenCalledWith('valid-password-reset-token', 'next-password-hash');
+  });
+
+  it('rejects invalid or expired password reset tokens', async () => {
+    const adminUsersService = {
+      findByEmail: jest.fn(),
+    };
+    const authSessionsService = {
+      create: jest.fn(),
+      invalidateById: jest.fn(),
+    };
+    const passwordResetTokensService = {
+      create: jest.fn(),
+      consumeAndUpdatePassword: jest.fn().mockResolvedValue(null),
+    };
+    const passwordHashingService = {
+      verifyPassword: jest.fn(),
+      hashPassword: jest.fn().mockResolvedValue('next-password-hash'),
+    };
+    const service = new AuthService(
+      adminUsersService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[0],
+      passwordHashingService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[1],
+      authSessionsService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[2],
+      passwordResetTokensService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[3],
+    );
+
+    const exception = await service
+      .confirmPasswordReset({
+        token: 'expired-password-reset-token',
+        newPassword: 'NewSecurePass123!',
+      })
+      .catch((error: unknown) => error);
+
+    expect(exception).toBeInstanceOf(BadRequestException);
+    expect((exception as BadRequestException).getStatus()).toBe(400);
+    expect((exception as BadRequestException).getResponse()).toEqual({
+      code: 'InvalidOrExpiredPasswordResetToken',
+      message: 'Invalid or expired password reset token',
+    });
+    expect(passwordHashingService.hashPassword).toHaveBeenCalledWith(
+      'NewSecurePass123!',
+    );
+    expect(
+      passwordResetTokensService.consumeAndUpdatePassword,
+    ).toHaveBeenCalledWith(
+      'expired-password-reset-token',
+      'next-password-hash',
+    );
+  });
+
+  it('rejects weak replacement passwords before hashing or token lookup', async () => {
+    const adminUsersService = {
+      findByEmail: jest.fn(),
+    };
+    const authSessionsService = {
+      create: jest.fn(),
+      invalidateById: jest.fn(),
+    };
+    const passwordResetTokensService = {
+      create: jest.fn(),
+      consumeAndUpdatePassword: jest.fn(),
+    };
+    const passwordHashingService = {
+      verifyPassword: jest.fn(),
+      hashPassword: jest.fn(),
+    };
+    const service = new AuthService(
+      adminUsersService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[0],
+      passwordHashingService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[1],
+      authSessionsService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[2],
+      passwordResetTokensService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[3],
+    );
+
+    const exception = await service
+      .confirmPasswordReset({
+        token: 'valid-password-reset-token',
+        newPassword: '123',
+      })
+      .catch((error: unknown) => error);
+
+    expect(exception).toBeInstanceOf(BadRequestException);
+    expect((exception as BadRequestException).getStatus()).toBe(400);
+    expect((exception as BadRequestException).getResponse()).toEqual({
+      code: 'WeakPassword',
+      message: 'Password does not meet strength requirements',
+    });
+    expect(passwordHashingService.hashPassword).not.toHaveBeenCalled();
+    expect(
+      passwordResetTokensService.consumeAndUpdatePassword,
+    ).not.toHaveBeenCalled();
   });
 });

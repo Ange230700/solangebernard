@@ -1,5 +1,10 @@
-import type { CurrentUserResponse, LoginResponse } from '@repo/contracts';
+import type {
+  ConfirmPasswordResetResponse,
+  CurrentUserResponse,
+  LoginResponse,
+} from '@repo/contracts';
 import { mapResponse } from '../../common/responses/response-mapping';
+import type { StoredAdminUser } from '../admin-users/admin-users.types';
 import type { AuthenticatedAdminSession } from './auth-sessions.types';
 import type { AuthenticatedSessionResult } from './auth.types';
 
@@ -23,21 +28,33 @@ export function mapCurrentUserResponse(
   });
 }
 
+export function mapConfirmPasswordResetResponse(
+  user: StoredAdminUser,
+): ConfirmPasswordResetResponse {
+  return mapResponse(user, (adminUser) => ({
+    user: mapAuthenticatedAdminUser(adminUser),
+  }));
+}
+
 function mapAuthenticatedSessionResponse(source: {
   user: AuthenticatedSessionResult['user'];
   session: { expiresAt: Date; issuedAt: Date };
 }): CurrentUserResponse {
   return mapResponse(source, (sessionSource) => ({
-    user: {
-      id: sessionSource.user.id,
-      email: sessionSource.user.email,
-      role: sessionSource.user.role,
-      isActive: sessionSource.user.isActive,
-    },
+    user: mapAuthenticatedAdminUser(sessionSource.user),
     session: {
       transport: COOKIE_SESSION_TRANSPORT,
       issuedAt: sessionSource.session.issuedAt.toISOString(),
       expiresAt: sessionSource.session.expiresAt.toISOString(),
     },
   }));
+}
+
+function mapAuthenticatedAdminUser(user: StoredAdminUser) {
+  return {
+    id: user.id,
+    email: user.email,
+    role: user.role,
+    isActive: user.isActive,
+  };
 }

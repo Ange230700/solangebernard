@@ -1,20 +1,27 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import type {
+  ConfirmPasswordResetRequest,
   LoginRequest,
   RequestPasswordResetRequest,
 } from '@repo/contracts';
+import type { StoredAdminUser } from '../admin-users/admin-users.types';
 import { AdminUsersService } from '../admin-users/admin-users.service';
 import { AuthSessionsService } from './auth-sessions.service';
 import { PasswordHashingService } from './password-hashing.service';
+import { isStrongPassword } from './password-policy';
 import { PasswordResetTokensService } from './password-reset-tokens.service';
 import type { AuthenticatedSessionResult } from './auth.types';
 
 const ACCOUNT_DISABLED_CODE = 'AccountDisabled' as const;
 const INVALID_CREDENTIALS_CODE = 'InvalidCredentials' as const;
+const INVALID_OR_EXPIRED_PASSWORD_RESET_TOKEN_CODE =
+  'InvalidOrExpiredPasswordResetToken' as const;
+const WEAK_PASSWORD_CODE = 'WeakPassword' as const;
 
 @Injectable()
 export class AuthService {
@@ -78,6 +85,35 @@ export class AuthService {
     }
 
     await this.passwordResetTokensService.create(user.id);
+  }
+
+  async confirmPasswordReset(
+    request: ConfirmPasswordResetRequest,
+  ): Promise<StoredAdminUser> {
+    if (!isStrongPassword(request.newPassword)) {
+      throw new BadRequestException({
+        code: WEAK_PASSWORD_CODE,
+        message: 'Password does not meet strength requirements',
+      });
+    }
+
+    const passwordHash = await this.passwordHashingService.hashPassword(
+      request.newPassword,
+    );
+    const updatedUser =
+      await this.passwordResetTokensService.consumeAndUpdatePassword(
+        request.token,
+        passwordHash,
+      );
+
+    if (!updatedUser) {
+      throw new BadRequestException({
+        code: INVALID_OR_EXPIRED_PASSWORD_RESET_TOKEN_CODE,
+        message: 'Invalid or expired password reset token',
+      });
+    }
+
+    return updatedUser;
   }
 }
 
