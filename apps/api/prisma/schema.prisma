@@ -27,7 +27,7 @@ enum OrderStatus {
 
 model AdminUser {
   id                     String                @id @default(cuid())
-  email                  String
+  email                  String                @unique
   passwordHash           String
   role                   AdminRole
   isActive               Boolean               @default(true)
@@ -42,22 +42,26 @@ model AdminUser {
 model AdminSession {
   id            String    @id @default(cuid())
   adminUserId   String
-  tokenHash     String
+  tokenHash     String    @unique
   expiresAt     DateTime
   invalidatedAt DateTime?
   adminUser     AdminUser @relation(fields: [adminUserId], references: [id])
 
+  @@index([adminUserId, invalidatedAt])
+  @@index([expiresAt])
   @@map("admin_sessions")
 }
 
 model PasswordResetToken {
   id          String    @id @default(cuid())
   adminUserId String
-  tokenHash   String
+  tokenHash   String    @unique
   expiresAt   DateTime
   consumedAt  DateTime?
   adminUser   AdminUser @relation(fields: [adminUserId], references: [id])
 
+  @@index([adminUserId, consumedAt])
+  @@index([expiresAt])
   @@map("password_reset_tokens")
 }
 
@@ -73,13 +77,14 @@ model Product {
   inventoryAdjustments InventoryAdjustment[]
   orderItems           OrderItem[]
 
+  @@index([status, category])
   @@map("products")
 }
 
 model ProductVariant {
   id                   String                @id @default(cuid())
   productId            String
-  sku                  String
+  sku                  String                @unique
   size                 String?
   color                String?
   variantLabel         String
@@ -88,6 +93,7 @@ model ProductVariant {
   inventoryAdjustments InventoryAdjustment[]
   orderItems           OrderItem[]
 
+  @@index([productId])
   @@map("product_variants")
 }
 
@@ -100,6 +106,7 @@ model ProductMedia {
   displayOrder Int?
   product      Product @relation(fields: [productId], references: [id])
 
+  @@index([productId, isMain])
   @@map("product_media")
 }
 
@@ -115,12 +122,14 @@ model InventoryAdjustment {
   productVariant   ProductVariant @relation(fields: [productVariantId], references: [id])
   actor            AdminUser      @relation(fields: [actorAdminUserId], references: [id])
 
+  @@index([productId, recordedAt])
+  @@index([productVariantId, recordedAt])
   @@map("inventory_adjustments")
 }
 
 model Order {
   id               String         @id @default(cuid())
-  orderReference   String
+  orderReference   String         @unique
   status           OrderStatus    @default(PendingConfirmation)
   customerFullName String
   customerPhone    String
@@ -130,6 +139,7 @@ model Order {
   items            OrderItem[]
   notifications    Notification[]
 
+  @@index([status])
   @@map("orders")
 }
 
@@ -146,6 +156,8 @@ model OrderItem {
   product              Product        @relation(fields: [productId], references: [id])
   productVariant       ProductVariant @relation(fields: [productVariantId], references: [id])
 
+  @@index([orderId])
+  @@index([productVariantId])
   @@map("order_items")
 }
 
@@ -168,6 +180,8 @@ model Notification {
   triggeredBy            AdminUser?            @relation("NotificationOperator", fields: [triggeredByAdminUserId], references: [id])
   attempts               NotificationAttempt[]
 
+  @@index([orderId])
+  @@index([status, queuedAt])
   @@map("notifications")
 }
 
@@ -181,5 +195,6 @@ model NotificationAttempt {
   attemptedAt          DateTime
   notification         Notification @relation(fields: [notificationId], references: [id])
 
+  @@index([notificationId, attemptedAt])
   @@map("notification_attempts")
 }
