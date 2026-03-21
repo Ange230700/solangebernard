@@ -155,4 +155,33 @@ describe('AuthSessionsService', () => {
       service.findAuthenticatedSession('raw-session-token'),
     ).resolves.toBeNull();
   });
+
+  it('invalidates a persisted session by id', async () => {
+    const invalidateById = jest.fn().mockResolvedValue({
+      id: 'session_1',
+    });
+    const authSessionsRepository = {
+      create: jest.fn(),
+      findActiveByTokenHash: jest.fn(),
+      invalidateById,
+    };
+    const apiConfigService = {
+      authSecret: 'local-dev-auth-secret-123',
+    };
+    const service = new AuthSessionsService(
+      authSessionsRepository as unknown as ConstructorParameters<
+        typeof AuthSessionsService
+      >[0],
+      apiConfigService as unknown as ConstructorParameters<
+        typeof AuthSessionsService
+      >[1],
+    );
+
+    await service.invalidateById('session_1');
+
+    expect(invalidateById).toHaveBeenCalledWith(
+      'session_1',
+      new Date('2026-03-21T17:30:00.000Z'),
+    );
+  });
 });

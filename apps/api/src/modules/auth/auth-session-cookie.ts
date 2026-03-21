@@ -20,6 +20,13 @@ export function setAuthSessionCookie(
   reply.header('Set-Cookie', createAuthSessionCookie(options));
 }
 
+export function clearAuthSessionCookie(
+  reply: CookieHeaderReply,
+  options: Pick<AuthSessionCookieOptions, 'appEnv'>,
+): void {
+  reply.header('Set-Cookie', createClearedAuthSessionCookie(options));
+}
+
 export function readAuthSessionCookie(
   cookieHeader: string | string[] | undefined,
 ): string | undefined {
@@ -41,13 +48,41 @@ export function readAuthSessionCookie(
 export function createAuthSessionCookie(
   options: AuthSessionCookieOptions,
 ): string {
+  return createSessionCookieAttributes({
+    appEnv: options.appEnv,
+    nameValue: `${AUTH_SESSION_COOKIE_NAME}=${options.token}`,
+    maxAge: AUTH_SESSION_DURATION_SECONDS,
+  });
+}
+
+function createClearedAuthSessionCookie(
+  options: Pick<AuthSessionCookieOptions, 'appEnv'>,
+): string {
+  return createSessionCookieAttributes({
+    appEnv: options.appEnv,
+    expires: 'Thu, 01 Jan 1970 00:00:00 GMT',
+    maxAge: 0,
+    nameValue: `${AUTH_SESSION_COOKIE_NAME}=`,
+  });
+}
+
+function createSessionCookieAttributes(options: {
+  appEnv: AppEnvironment;
+  expires?: string;
+  maxAge: number;
+  nameValue: string;
+}): string {
   const attributes = [
-    `${AUTH_SESSION_COOKIE_NAME}=${options.token}`,
+    options.nameValue,
     'Path=/',
     'HttpOnly',
     'SameSite=Lax',
-    `Max-Age=${AUTH_SESSION_DURATION_SECONDS}`,
+    `Max-Age=${options.maxAge}`,
   ];
+
+  if (options.expires) {
+    attributes.push(`Expires=${options.expires}`);
+  }
 
   if (options.appEnv !== 'local') {
     attributes.push('Secure');

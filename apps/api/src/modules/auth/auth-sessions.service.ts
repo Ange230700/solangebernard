@@ -52,4 +52,8 @@ export class AuthSessionsService {
 
     return authenticatedSession;
   }
+
+  async invalidateById(sessionId: string): Promise<void> {
+    await this.authSessionsRepository.invalidateById(sessionId, new Date());
+  }
 }

@@ -51,6 +51,22 @@ export class AuthSessionsRepository {
 
     return adminSession ? mapAuthenticatedAdminSession(adminSession) : null;
   }
+
+  async invalidateById(
+    sessionId: string,
+    invalidatedAt: Date,
+  ): Promise<StoredAuthSession> {
+    const adminSession = await this.prisma.adminSession.update({
+      where: {
+        id: sessionId,
+      },
+      data: {
+        invalidatedAt,
+      },
+    });
+
+    return mapStoredAuthSession(adminSession);
+  }
 }
 
 function mapStoredAuthSession(

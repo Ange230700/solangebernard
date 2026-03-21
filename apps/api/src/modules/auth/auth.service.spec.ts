@@ -195,4 +195,33 @@ describe('AuthService', () => {
     expect(authSessionsService.create).not.toHaveBeenCalled();
     expect(passwordHashingService.verifyPassword).not.toHaveBeenCalled();
   });
+
+  it('invalidates the current authenticated session on logout', async () => {
+    const adminUsersService = {
+      findByEmail: jest.fn(),
+    };
+    const authSessionsService = {
+      create: jest.fn(),
+      invalidateById: jest.fn().mockResolvedValue(undefined),
+    };
+    const passwordHashingService = {
+      verifyPassword: jest.fn(),
+    };
+    const service = new AuthService(
+      adminUsersService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[0],
+      passwordHashingService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[1],
+      authSessionsService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[2],
+    );
+
+    await expect(service.logout('session_1')).resolves.toBeUndefined();
+    expect(authSessionsService.invalidateById).toHaveBeenCalledWith(
+      'session_1',
+    );
+  });
 });

@@ -57,6 +57,10 @@ export class AuthService {
       session,
     };
   }
+
+  async logout(sessionId: string): Promise<void> {
+    await this.authSessionsService.invalidateById(sessionId);
+  }
 }
 
 function normalizeEmailAddress(email: string): string {
