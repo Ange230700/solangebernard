@@ -25,8 +25,12 @@ startup.
   server-side secret for future back-office session and auth flows
 - `NOTIFICATION_PROVIDER`
   notification provider mode or adapter name such as local `noop`
-- `FRONTEND_ORIGINS`
-  comma-separated allowed origins for browser, desktop, and mobile surfaces
+- `WEB_CLIENT_ORIGINS`
+  comma-separated browser origins, including the local web Angular dev server
+- `DESKTOP_CLIENT_ORIGINS`
+  comma-separated Tauri desktop origins for the Angular dev server and packaged shell
+- `MOBILE_CLIENT_ORIGINS`
+  comma-separated mobile origins for the Angular dev server and Capacitor webview
 
 ## Optional Variables
 
@@ -34,14 +38,24 @@ startup.
   optional provider credential for non-local notification adapters
 - `NOTIFICATION_PROVIDER_SENDER`
   optional sender label or sender identifier used by the notification adapter
+- `FRONTEND_ORIGINS`
+  temporary backward-compatible fallback for older local `.env` files while they
+  are being migrated to the scoped client origin variables above
 
 ## Current Behavior
 
 - The API runtime loads environment values from `apps/api/.env` when present.
 - The API startup path validates required values before the Nest app finishes
   booting.
-- CORS uses `FRONTEND_ORIGINS` and enables credentials so the future cookie
-  auth flow can work across approved client origins.
+- CORS uses the scoped web, desktop, and mobile origin lists, allows
+  credentials, and answers preflight requests with the standard JSON/API
+  methods and headers the clients need.
+- Local development assumes:
+  `pnpm client:web` on `http://127.0.0.1:4200`,
+  `pnpm client:desktop` on `http://127.0.0.1:4201` during Tauri dev and
+  `tauri://localhost` when packaged,
+  `pnpm client:mobile` on `http://127.0.0.1:4202` plus
+  `capacitor://localhost` or `http://localhost` in the native shell.
 
 ## Related Decisions
 

@@ -5,6 +5,7 @@ import {
 import { Test, TestingModule } from '@nestjs/testing';
 import { configureApp } from './../src/app.setup';
 import { AppModule } from './../src/app.module';
+import { ApiConfigService } from './../src/config/api-config.service';
 
 describe('Health endpoint (e2e)', () => {
   let app: NestFastifyApplication;
@@ -17,10 +18,14 @@ describe('Health endpoint (e2e)', () => {
       AUTH_SECRET: 'local-dev-auth-secret-123',
       DATABASE_URL:
         'postgresql://postgres:postgres@localhost:5432/solangebernard?schema=public',
-      FRONTEND_ORIGINS: 'http://127.0.0.1:4200',
+      DESKTOP_CLIENT_ORIGINS:
+        'http://127.0.0.1:4201,tauri://localhost,http://localhost:4201',
+      MOBILE_CLIENT_ORIGINS:
+        'http://127.0.0.1:4202,capacitor://localhost,http://localhost',
       NOTIFICATION_PROVIDER: 'noop',
       NOTIFICATION_PROVIDER_SENDER: 'Solange Bernard',
       PORT: '3000',
+      WEB_CLIENT_ORIGINS: 'http://127.0.0.1:4200,http://localhost:4200',
     };
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -30,7 +35,11 @@ describe('Health endpoint (e2e)', () => {
     app = moduleFixture.createNestApplication<NestFastifyApplication>(
       new FastifyAdapter(),
     );
-    configureApp(app);
+    const apiConfig = app.get(ApiConfigService);
+
+    configureApp(app, {
+      cors: apiConfig.cors,
+    });
     await app.init();
     await app.getHttpAdapter().getInstance().ready();
   });

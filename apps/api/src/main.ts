@@ -15,7 +15,7 @@ async function bootstrap() {
   const apiConfig = app.get(ApiConfigService);
 
   configureApp(app, {
-    frontendOrigins: apiConfig.frontendOrigins,
+    cors: apiConfig.cors,
   });
   await app.listen(apiConfig.port, '0.0.0.0');
 }

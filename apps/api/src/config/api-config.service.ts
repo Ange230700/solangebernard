@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { API_CONFIG } from './api-config';
 import type {
   ApiConfig,
+  ApiCorsConfig,
   AppEnvironment,
   NotificationProviderConfig,
 } from './api-config';
@@ -22,8 +23,20 @@ export class ApiConfigService {
     return this.config.databaseUrl;
   }
 
+  get cors(): ApiCorsConfig {
+    return {
+      ...this.config.cors,
+      allowedHeaders: [...this.config.cors.allowedHeaders],
+      allowedMethods: [...this.config.cors.allowedMethods],
+      allowedOrigins: [...this.config.cors.allowedOrigins],
+      desktopOrigins: [...this.config.cors.desktopOrigins],
+      mobileOrigins: [...this.config.cors.mobileOrigins],
+      webOrigins: [...this.config.cors.webOrigins],
+    };
+  }
+
   get frontendOrigins(): string[] {
-    return [...this.config.frontendOrigins];
+    return [...this.config.cors.allowedOrigins];
   }
 
   get notificationProvider(): NotificationProviderConfig {

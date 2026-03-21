@@ -3,21 +3,23 @@ import type { INestApplication } from '@nestjs/common';
 import type { ErrorDetail } from '@repo/contracts';
 import type { ValidationError } from 'class-validator';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
+import {
+  API_CORS_ALLOWED_HEADERS,
+  API_CORS_ALLOWED_METHODS,
+} from './config/api-config';
+import type { ApiCorsConfig } from './config/api-config';
 
 const VALIDATION_FAILED_CODE = 'ValidationFailed' as const;
 
 export interface AppSetupOptions {
-  frontendOrigins?: string[];
+  cors?: ApiCorsConfig;
 }
 
 export function configureApp(
   app: INestApplication,
   options: AppSetupOptions = {},
 ): void {
-  app.enableCors({
-    credentials: true,
-    origin: options.frontendOrigins ?? true,
-  });
+  app.enableCors(createCorsOptions(options.cors));
   app.useGlobalPipes(
     new ValidationPipe({
       exceptionFactory: (errors) =>
@@ -33,6 +35,28 @@ export function configureApp(
     }),
   );
   app.useGlobalFilters(new GlobalExceptionFilter());
+}
+
+function createCorsOptions(cors?: ApiCorsConfig) {
+  return {
+    allowedHeaders: cors?.allowedHeaders ?? [...API_CORS_ALLOWED_HEADERS],
+    credentials: cors?.allowCredentials ?? true,
+    methods: cors?.allowedMethods ?? [...API_CORS_ALLOWED_METHODS],
+    origin: cors ? createCorsOriginResolver(cors.allowedOrigins) : true,
+  };
+}
+
+type CorsOriginCallback = (error: Error | null, allowOrigin?: boolean) => void;
+
+function createCorsOriginResolver(allowedOrigins: readonly string[]) {
+  return (origin: string | undefined, callback: CorsOriginCallback): void => {
+    if (!origin) {
+      callback(null, true);
+      return;
+    }
+
+    callback(null, allowedOrigins.includes(origin));
+  };
 }
 
 function flattenValidationErrors(

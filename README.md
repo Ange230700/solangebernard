@@ -22,8 +22,8 @@
 
 From the repo root:
 
-- Web: `pnpm client:web`
-- Mobile: `pnpm client:mobile`
+- Web: `pnpm client:web` on `http://127.0.0.1:4200`
+- Mobile: `pnpm client:mobile` on `http://127.0.0.1:4202`
 - Desktop: `pnpm client:desktop`
 - API: `pnpm api`
 - Build everything: `pnpm build`
@@ -76,7 +76,9 @@ with matching local credentials, port, and database name.
   `DATABASE_URL`,
   `AUTH_SECRET`,
   `NOTIFICATION_PROVIDER`,
-  `FRONTEND_ORIGINS`
+  `WEB_CLIENT_ORIGINS`,
+  `DESKTOP_CLIENT_ORIGINS`,
+  `MOBILE_CLIENT_ORIGINS`
 - `PORT` defaults to `3000` when omitted
 
 ## Boundaries

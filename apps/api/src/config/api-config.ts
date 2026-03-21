@@ -1,8 +1,31 @@
 export const API_CONFIG = Symbol('API_CONFIG');
 
 export const APP_ENVIRONMENTS = ['local', 'staging', 'production'] as const;
+export const API_CORS_ALLOWED_HEADERS = [
+  'Content-Type',
+  'Authorization',
+] as const;
+export const API_CORS_ALLOWED_METHODS = [
+  'GET',
+  'HEAD',
+  'POST',
+  'PUT',
+  'PATCH',
+  'DELETE',
+  'OPTIONS',
+] as const;
 
 export type AppEnvironment = (typeof APP_ENVIRONMENTS)[number];
+
+export interface ApiCorsConfig {
+  allowCredentials: boolean;
+  allowedHeaders: string[];
+  allowedMethods: string[];
+  allowedOrigins: string[];
+  desktopOrigins: string[];
+  mobileOrigins: string[];
+  webOrigins: string[];
+}
 
 export interface NotificationProviderConfig {
   apiKey?: string;
@@ -13,8 +36,8 @@ export interface NotificationProviderConfig {
 export interface ApiConfig {
   appEnv: AppEnvironment;
   authSecret: string;
+  cors: ApiCorsConfig;
   databaseUrl: string;
-  frontendOrigins: string[];
   notificationProvider: NotificationProviderConfig;
   port: number;
 }
@@ -24,12 +47,12 @@ export function createApiConfig(env: NodeJS.ProcessEnv): ApiConfig {
 
   const appEnv = parseAppEnvironment(env.APP_ENV, errors);
   const authSecret = parseAuthSecret(env.AUTH_SECRET, errors);
+  const cors = createCorsConfig(env, errors);
   const databaseUrl = parseRequiredString(
     'DATABASE_URL',
     env.DATABASE_URL,
     errors,
   );
-  const frontendOrigins = parseFrontendOrigins(env.FRONTEND_ORIGINS, errors);
   const notificationProviderName = parseRequiredString(
     'NOTIFICATION_PROVIDER',
     env.NOTIFICATION_PROVIDER,
@@ -52,8 +75,8 @@ export function createApiConfig(env: NodeJS.ProcessEnv): ApiConfig {
   return {
     appEnv,
     authSecret,
+    cors,
     databaseUrl,
-    frontendOrigins,
     notificationProvider: {
       name: notificationProviderName,
       ...(notificationProviderApiKey
@@ -98,14 +121,70 @@ function parseAuthSecret(
   return value;
 }
 
-function parseFrontendOrigins(
+function createCorsConfig(
+  env: NodeJS.ProcessEnv,
+  errors: string[],
+): ApiCorsConfig {
+  const hasScopedClientOrigins = [
+    env.WEB_CLIENT_ORIGINS,
+    env.DESKTOP_CLIENT_ORIGINS,
+    env.MOBILE_CLIENT_ORIGINS,
+  ].some((value) => normalizeOptionalString(value));
+
+  if (!hasScopedClientOrigins) {
+    return {
+      allowCredentials: true,
+      allowedHeaders: [...API_CORS_ALLOWED_HEADERS],
+      allowedMethods: [...API_CORS_ALLOWED_METHODS],
+      allowedOrigins: parseOriginList(
+        'FRONTEND_ORIGINS',
+        env.FRONTEND_ORIGINS,
+        errors,
+      ),
+      desktopOrigins: [],
+      mobileOrigins: [],
+      webOrigins: [],
+    };
+  }
+
+  const webOrigins = parseOriginList(
+    'WEB_CLIENT_ORIGINS',
+    env.WEB_CLIENT_ORIGINS,
+    errors,
+  );
+  const desktopOrigins = parseOriginList(
+    'DESKTOP_CLIENT_ORIGINS',
+    env.DESKTOP_CLIENT_ORIGINS,
+    errors,
+  );
+  const mobileOrigins = parseOriginList(
+    'MOBILE_CLIENT_ORIGINS',
+    env.MOBILE_CLIENT_ORIGINS,
+    errors,
+  );
+
+  return {
+    allowCredentials: true,
+    allowedHeaders: [...API_CORS_ALLOWED_HEADERS],
+    allowedMethods: [...API_CORS_ALLOWED_METHODS],
+    allowedOrigins: [
+      ...new Set([...webOrigins, ...desktopOrigins, ...mobileOrigins]),
+    ],
+    desktopOrigins,
+    mobileOrigins,
+    webOrigins,
+  };
+}
+
+function parseOriginList(
+  name: string,
   rawValue: string | undefined,
   errors: string[],
 ): string[] {
   const value = normalizeOptionalString(rawValue);
 
   if (!value) {
-    errors.push('FRONTEND_ORIGINS is required.');
+    errors.push(`${name} is required.`);
     return [];
   }
 
@@ -119,7 +198,7 @@ function parseFrontendOrigins(
   ];
 
   if (origins.length === 0) {
-    errors.push('FRONTEND_ORIGINS must contain at least one origin.');
+    errors.push(`${name} must contain at least one origin.`);
     return [];
   }
 
@@ -127,7 +206,7 @@ function parseFrontendOrigins(
     try {
       new URL(origin);
     } catch {
-      errors.push(`FRONTEND_ORIGINS contains an invalid URL: ${origin}.`);
+      errors.push(`${name} contains an invalid URL: ${origin}.`);
     }
   });
 

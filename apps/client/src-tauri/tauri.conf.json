@@ -6,7 +6,7 @@
   "build": {
     "frontendDist": "../dist/desktop/browser",
     "devUrl": "http://127.0.0.1:4201",
-    "beforeDevCommand": "pnpm run serve:desktop -- --host 127.0.0.1 --port 4201",
+    "beforeDevCommand": "pnpm run serve:desktop",
     "beforeBuildCommand": "pnpm exec ng build desktop"
   },
   "app": {
