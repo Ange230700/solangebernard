@@ -1,4 +1,7 @@
-import { createAuthSessionCookie } from './auth-session-cookie';
+import {
+  createAuthSessionCookie,
+  readAuthSessionCookie,
+} from './auth-session-cookie';
 
 describe('createAuthSessionCookie', () => {
   it('creates a local development cookie without the secure flag', () => {
@@ -19,5 +22,13 @@ describe('createAuthSessionCookie', () => {
         token: 'session-token-123',
       }),
     ).toContain('Secure');
+  });
+
+  it('reads the auth session token back out of a cookie header', () => {
+    expect(
+      readAuthSessionCookie(
+        'theme=light; solange_admin_session=session-token-123; Path=/; HttpOnly',
+      ),
+    ).toBe('session-token-123');
   });
 });

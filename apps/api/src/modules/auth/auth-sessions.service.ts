@@ -1,9 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { ApiConfigService } from '../../config/api-config.service';
 import { AUTH_SESSION_DURATION_MS } from './auth-session.constants';
-import { createAuthSessionToken } from './auth-session-token';
+import {
+  createAuthSessionToken,
+  hashAuthSessionToken,
+} from './auth-session-token';
 import { AuthSessionsRepository } from './auth-sessions.repository';
-import type { CreatedAuthSession } from './auth-sessions.types';
+import type {
+  AuthenticatedAdminSession,
+  CreatedAuthSession,
+} from './auth-sessions.types';
 
 @Injectable()
 export class AuthSessionsService {
@@ -28,5 +34,22 @@ export class AuthSessionsService {
       issuedAt,
       expiresAt,
     };
+  }
+
+  async findAuthenticatedSession(
+    token: string,
+  ): Promise<AuthenticatedAdminSession | null> {
+    const tokenHash = hashAuthSessionToken(token, this.apiConfig.authSecret);
+    const authenticatedSession =
+      await this.authSessionsRepository.findActiveByTokenHash(
+        tokenHash,
+        new Date(),
+      );
+
+    if (!authenticatedSession || !authenticatedSession.user.isActive) {
+      return null;
+    }
+
+    return authenticatedSession;
   }
 }

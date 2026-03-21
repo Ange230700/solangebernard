@@ -19,6 +19,7 @@ export class PrismaClient {
         'PrismaClient test mock adminSession.create() was called unexpectedly.',
       );
     },
+    findFirst: () => Promise.resolve(null),
   };
 
   constructor() {}

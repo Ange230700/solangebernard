@@ -20,6 +20,24 @@ export function setAuthSessionCookie(
   reply.header('Set-Cookie', createAuthSessionCookie(options));
 }
 
+export function readAuthSessionCookie(
+  cookieHeader: string | string[] | undefined,
+): string | undefined {
+  const cookieValue = Array.isArray(cookieHeader)
+    ? cookieHeader.join('; ')
+    : cookieHeader;
+
+  if (!cookieValue) {
+    return undefined;
+  }
+
+  return cookieValue
+    .split(';')
+    .map((part) => part.trim())
+    .find((part) => part.startsWith(`${AUTH_SESSION_COOKIE_NAME}=`))
+    ?.slice(`${AUTH_SESSION_COOKIE_NAME}=`.length);
+}
+
 export function createAuthSessionCookie(
   options: AuthSessionCookieOptions,
 ): string {

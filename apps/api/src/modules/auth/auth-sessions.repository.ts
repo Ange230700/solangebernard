@@ -1,8 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
-import type { AdminSession as PrismaAdminSession } from '../../../generated/prisma/client';
+import type {
+  AdminSession as PrismaAdminSession,
+  AdminUser as PrismaAdminUser,
+} from '../../../generated/prisma/client';
 import { PRISMA_CLIENT } from '../../persistence/prisma.constants';
 import type { PrismaService } from '../../persistence/prisma.service';
 import type {
+  AuthenticatedAdminSession,
   CreateAuthSessionInput,
   StoredAuthSession,
 } from './auth-sessions.types';
@@ -27,6 +31,26 @@ export class AuthSessionsRepository {
 
     return mapStoredAuthSession(adminSession);
   }
+
+  async findActiveByTokenHash(
+    tokenHash: string,
+    at: Date,
+  ): Promise<AuthenticatedAdminSession | null> {
+    const adminSession = await this.prisma.adminSession.findFirst({
+      where: {
+        tokenHash,
+        invalidatedAt: null,
+        expiresAt: {
+          gt: at,
+        },
+      },
+      include: {
+        adminUser: true,
+      },
+    });
+
+    return adminSession ? mapAuthenticatedAdminSession(adminSession) : null;
+  }
 }
 
 function mapStoredAuthSession(
@@ -42,3 +66,24 @@ function mapStoredAuthSession(
     updatedAt: adminSession.updatedAt,
   };
 }
+
+function mapAuthenticatedAdminSession(
+  adminSession: PrismaAdminSessionWithUser,
+): AuthenticatedAdminSession {
+  return {
+    session: mapStoredAuthSession(adminSession),
+    user: {
+      id: adminSession.adminUser.id,
+      email: adminSession.adminUser.email,
+      passwordHash: adminSession.adminUser.passwordHash,
+      role: adminSession.adminUser.role,
+      isActive: adminSession.adminUser.isActive,
+      createdAt: adminSession.adminUser.createdAt,
+      updatedAt: adminSession.adminUser.updatedAt,
+    },
+  };
+}
+
+type PrismaAdminSessionWithUser = PrismaAdminSession & {
+  adminUser: PrismaAdminUser;
+};

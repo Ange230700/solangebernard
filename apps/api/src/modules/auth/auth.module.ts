@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AdminUsersModule } from '../admin-users/admin-users.module';
+import { AuthGuard } from './auth.guard';
 import { AuthController } from './auth.controller';
 import { AuthSessionsRepository } from './auth-sessions.repository';
 import { AuthSessionsService } from './auth-sessions.service';
@@ -11,11 +12,17 @@ import { PrismaModule } from '../../persistence/prisma.module';
   imports: [AdminUsersModule, PrismaModule],
   controllers: [AuthController],
   providers: [
+    AuthGuard,
     AuthSessionsRepository,
     AuthSessionsService,
     AuthService,
     PasswordHashingService,
   ],
-  exports: [AuthSessionsService, AuthService, PasswordHashingService],
+  exports: [
+    AuthGuard,
+    AuthSessionsService,
+    AuthService,
+    PasswordHashingService,
+  ],
 })
 export class AuthModule {}

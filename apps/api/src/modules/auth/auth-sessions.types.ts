@@ -1,3 +1,5 @@
+import type { StoredAdminUser } from '../admin-users/admin-users.types';
+
 export interface CreateAuthSessionInput {
   adminUserId: string;
   expiresAt: Date;
@@ -18,4 +20,9 @@ export interface CreatedAuthSession {
   token: string;
   issuedAt: Date;
   expiresAt: Date;
+}
+
+export interface AuthenticatedAdminSession {
+  session: StoredAuthSession;
+  user: StoredAdminUser;
 }
