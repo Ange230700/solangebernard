@@ -18,6 +18,7 @@ import { AuthSessionsService } from '../src/modules/auth/auth-sessions.service';
 import { AuthController } from '../src/modules/auth/auth.controller';
 import { AuthService } from '../src/modules/auth/auth.service';
 import { PasswordHashingService } from '../src/modules/auth/password-hashing.service';
+import { PasswordResetTokensService } from '../src/modules/auth/password-reset-tokens.service';
 import { RoleGuard } from '../src/modules/auth/role.guard';
 import { AuthorizedRoles } from '../src/modules/auth/roles.decorator';
 import { configureApp } from '../src/app.setup';
@@ -94,6 +95,9 @@ describe('RoleGuard (e2e)', () => {
   let passwordHashingService: {
     verifyPassword: jest.Mock;
   };
+  let passwordResetTokensService: {
+    create: jest.Mock;
+  };
   let apiConfigService: {
     appEnv: 'local';
     authSecret: string;
@@ -167,6 +171,9 @@ describe('RoleGuard (e2e)', () => {
     passwordHashingService = {
       verifyPassword: jest.fn().mockResolvedValue(true),
     };
+    passwordResetTokensService = {
+      create: jest.fn(),
+    };
     apiConfigService = {
       appEnv: 'local',
       authSecret: 'local-dev-auth-secret-123',
@@ -190,6 +197,10 @@ describe('RoleGuard (e2e)', () => {
         {
           provide: PasswordHashingService,
           useValue: passwordHashingService,
+        },
+        {
+          provide: PasswordResetTokensService,
+          useValue: passwordResetTokensService,
         },
         {
           provide: ApiConfigService,

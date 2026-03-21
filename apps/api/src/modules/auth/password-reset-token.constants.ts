@@ -1,0 +1,1 @@
+export const PASSWORD_RESET_TOKEN_DURATION_MS = 60 * 60 * 1000;

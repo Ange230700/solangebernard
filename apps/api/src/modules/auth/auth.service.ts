@@ -10,6 +10,7 @@ import type {
 import { AdminUsersService } from '../admin-users/admin-users.service';
 import { AuthSessionsService } from './auth-sessions.service';
 import { PasswordHashingService } from './password-hashing.service';
+import { PasswordResetTokensService } from './password-reset-tokens.service';
 import type { AuthenticatedSessionResult } from './auth.types';
 
 const ACCOUNT_DISABLED_CODE = 'AccountDisabled' as const;
@@ -21,6 +22,7 @@ export class AuthService {
     private readonly adminUsersService: AdminUsersService,
     private readonly passwordHashingService: PasswordHashingService,
     private readonly authSessionsService: AuthSessionsService,
+    private readonly passwordResetTokensService: PasswordResetTokensService,
   ) {}
 
   async login(request: LoginRequest): Promise<AuthenticatedSessionResult> {
@@ -74,6 +76,8 @@ export class AuthService {
     if (!user || !user.isActive) {
       return;
     }
+
+    await this.passwordResetTokensService.create(user.id);
   }
 }
 

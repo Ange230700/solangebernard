@@ -17,6 +17,7 @@ import { AuthController } from '../src/modules/auth/auth.controller';
 import { AuthGuard } from '../src/modules/auth/auth.guard';
 import { AuthService } from '../src/modules/auth/auth.service';
 import { PasswordHashingService } from '../src/modules/auth/password-hashing.service';
+import { PasswordResetTokensService } from '../src/modules/auth/password-reset-tokens.service';
 import { configureApp } from '../src/app.setup';
 
 interface CurrentUserResponseBody {
@@ -61,6 +62,9 @@ describe('Current user endpoint (e2e)', () => {
   };
   let passwordHashingService: {
     verifyPassword: jest.Mock;
+  };
+  let passwordResetTokensService: {
+    create: jest.Mock;
   };
   let apiConfigService: {
     appEnv: 'local';
@@ -122,6 +126,9 @@ describe('Current user endpoint (e2e)', () => {
     passwordHashingService = {
       verifyPassword: jest.fn().mockResolvedValue(true),
     };
+    passwordResetTokensService = {
+      create: jest.fn(),
+    };
     apiConfigService = {
       appEnv: 'local',
       authSecret: 'local-dev-auth-secret-123',
@@ -144,6 +151,10 @@ describe('Current user endpoint (e2e)', () => {
         {
           provide: PasswordHashingService,
           useValue: passwordHashingService,
+        },
+        {
+          provide: PasswordResetTokensService,
+          useValue: passwordResetTokensService,
         },
         {
           provide: ApiConfigService,

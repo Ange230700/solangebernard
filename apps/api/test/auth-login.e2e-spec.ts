@@ -11,6 +11,7 @@ import { AuthController } from '../src/modules/auth/auth.controller';
 import { AuthSessionsService } from '../src/modules/auth/auth-sessions.service';
 import { AuthService } from '../src/modules/auth/auth.service';
 import { PasswordHashingService } from '../src/modules/auth/password-hashing.service';
+import { PasswordResetTokensService } from '../src/modules/auth/password-reset-tokens.service';
 import { configureApp } from '../src/app.setup';
 
 interface LoginSuccessBody {
@@ -59,6 +60,9 @@ describe('Auth login endpoint (e2e)', () => {
   let passwordHashingService: {
     verifyPassword: jest.Mock;
   };
+  let passwordResetTokensService: {
+    create: jest.Mock;
+  };
   let apiConfigService: {
     appEnv: 'local';
   };
@@ -73,6 +77,9 @@ describe('Auth login endpoint (e2e)', () => {
     };
     passwordHashingService = {
       verifyPassword: jest.fn(),
+    };
+    passwordResetTokensService = {
+      create: jest.fn(),
     };
     apiConfigService = {
       appEnv: 'local',
@@ -93,6 +100,10 @@ describe('Auth login endpoint (e2e)', () => {
         {
           provide: AuthSessionsService,
           useValue: authSessionsService,
+        },
+        {
+          provide: PasswordResetTokensService,
+          useValue: passwordResetTokensService,
         },
         {
           provide: ApiConfigService,

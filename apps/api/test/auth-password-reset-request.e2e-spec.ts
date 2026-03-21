@@ -11,6 +11,7 @@ import { AuthController } from '../src/modules/auth/auth.controller';
 import { AuthSessionsService } from '../src/modules/auth/auth-sessions.service';
 import { AuthService } from '../src/modules/auth/auth.service';
 import { PasswordHashingService } from '../src/modules/auth/password-hashing.service';
+import { PasswordResetTokensService } from '../src/modules/auth/password-reset-tokens.service';
 import { configureApp } from '../src/app.setup';
 
 interface RequestPasswordResetResponseBody {
@@ -50,6 +51,9 @@ describe('Password reset request endpoint (e2e)', () => {
   let passwordHashingService: {
     verifyPassword: jest.Mock;
   };
+  let passwordResetTokensService: {
+    create: jest.Mock;
+  };
   let apiConfigService: {
     appEnv: 'local';
   };
@@ -65,6 +69,9 @@ describe('Password reset request endpoint (e2e)', () => {
     };
     passwordHashingService = {
       verifyPassword: jest.fn(),
+    };
+    passwordResetTokensService = {
+      create: jest.fn(),
     };
     apiConfigService = {
       appEnv: 'local',
@@ -85,6 +92,10 @@ describe('Password reset request endpoint (e2e)', () => {
         {
           provide: AuthSessionsService,
           useValue: authSessionsService,
+        },
+        {
+          provide: PasswordResetTokensService,
+          useValue: passwordResetTokensService,
         },
         {
           provide: ApiConfigService,
@@ -129,6 +140,9 @@ describe('Password reset request endpoint (e2e)', () => {
     expect(adminUsersService.findByEmail).toHaveBeenCalledWith(
       'staff@solangebernard.com',
     );
+    expect(passwordResetTokensService.create).toHaveBeenCalledWith(
+      'admin_user_2',
+    );
   });
 
   it('accepts unknown email addresses without leaking whether an account exists', async () => {
@@ -147,6 +161,7 @@ describe('Password reset request endpoint (e2e)', () => {
     expect(body).toEqual({
       accepted: true,
     });
+    expect(passwordResetTokensService.create).not.toHaveBeenCalled();
   });
 
   it('validates the password reset request payload', async () => {

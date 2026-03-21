@@ -33,6 +33,9 @@ describe('AuthService', () => {
         expiresAt: new Date('2026-03-22T05:30:00.000Z'),
       }),
     };
+    const passwordResetTokensService = {
+      create: jest.fn(),
+    };
     const passwordHashingService = {
       verifyPassword: jest.fn().mockResolvedValue(true),
     };
@@ -46,6 +49,9 @@ describe('AuthService', () => {
       authSessionsService as unknown as ConstructorParameters<
         typeof AuthService
       >[2],
+      passwordResetTokensService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[3],
     );
 
     await expect(
@@ -78,6 +84,9 @@ describe('AuthService', () => {
     const authSessionsService = {
       create: jest.fn(),
     };
+    const passwordResetTokensService = {
+      create: jest.fn(),
+    };
     const passwordHashingService = {
       verifyPassword: jest.fn(),
     };
@@ -91,6 +100,9 @@ describe('AuthService', () => {
       authSessionsService as unknown as ConstructorParameters<
         typeof AuthService
       >[2],
+      passwordResetTokensService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[3],
     );
 
     const exception = await service
@@ -117,6 +129,9 @@ describe('AuthService', () => {
     const authSessionsService = {
       create: jest.fn(),
     };
+    const passwordResetTokensService = {
+      create: jest.fn(),
+    };
     const passwordHashingService = {
       verifyPassword: jest.fn().mockResolvedValue(false),
     };
@@ -130,6 +145,9 @@ describe('AuthService', () => {
       authSessionsService as unknown as ConstructorParameters<
         typeof AuthService
       >[2],
+      passwordResetTokensService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[3],
     );
 
     const exception = await service
@@ -164,6 +182,9 @@ describe('AuthService', () => {
     const authSessionsService = {
       create: jest.fn(),
     };
+    const passwordResetTokensService = {
+      create: jest.fn(),
+    };
     const passwordHashingService = {
       verifyPassword: jest.fn(),
     };
@@ -177,6 +198,9 @@ describe('AuthService', () => {
       authSessionsService as unknown as ConstructorParameters<
         typeof AuthService
       >[2],
+      passwordResetTokensService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[3],
     );
 
     const exception = await service
@@ -204,6 +228,9 @@ describe('AuthService', () => {
       create: jest.fn(),
       invalidateById: jest.fn().mockResolvedValue(undefined),
     };
+    const passwordResetTokensService = {
+      create: jest.fn(),
+    };
     const passwordHashingService = {
       verifyPassword: jest.fn(),
     };
@@ -217,6 +244,9 @@ describe('AuthService', () => {
       authSessionsService as unknown as ConstructorParameters<
         typeof AuthService
       >[2],
+      passwordResetTokensService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[3],
     );
 
     await expect(service.logout('session_1')).resolves.toBeUndefined();
@@ -233,6 +263,13 @@ describe('AuthService', () => {
       create: jest.fn(),
       invalidateById: jest.fn(),
     };
+    const passwordResetTokensService = {
+      create: jest.fn().mockResolvedValue({
+        token: 'raw-password-reset-token',
+        issuedAt: new Date('2026-03-21T17:30:00.000Z'),
+        expiresAt: new Date('2026-03-21T18:30:00.000Z'),
+      }),
+    };
     const passwordHashingService = {
       verifyPassword: jest.fn(),
     };
@@ -246,6 +283,9 @@ describe('AuthService', () => {
       authSessionsService as unknown as ConstructorParameters<
         typeof AuthService
       >[2],
+      passwordResetTokensService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[3],
     );
 
     await expect(
@@ -255,6 +295,9 @@ describe('AuthService', () => {
     ).resolves.toBeUndefined();
     expect(adminUsersService.findByEmail).toHaveBeenCalledWith(
       'staff@solangebernard.com',
+    );
+    expect(passwordResetTokensService.create).toHaveBeenCalledWith(
+      'admin_user_1',
     );
   });
 
@@ -266,6 +309,9 @@ describe('AuthService', () => {
       create: jest.fn(),
       invalidateById: jest.fn(),
     };
+    const passwordResetTokensService = {
+      create: jest.fn(),
+    };
     const passwordHashingService = {
       verifyPassword: jest.fn(),
     };
@@ -279,6 +325,9 @@ describe('AuthService', () => {
       authSessionsService as unknown as ConstructorParameters<
         typeof AuthService
       >[2],
+      passwordResetTokensService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[3],
     );
 
     await expect(
@@ -289,6 +338,7 @@ describe('AuthService', () => {
     expect(adminUsersService.findByEmail).toHaveBeenCalledWith(
       'unknown@solangebernard.com',
     );
+    expect(passwordResetTokensService.create).not.toHaveBeenCalled();
   });
 
   it('accepts password reset requests for disabled accounts without exposing account state', async () => {
@@ -305,6 +355,9 @@ describe('AuthService', () => {
       create: jest.fn(),
       invalidateById: jest.fn(),
     };
+    const passwordResetTokensService = {
+      create: jest.fn(),
+    };
     const passwordHashingService = {
       verifyPassword: jest.fn(),
     };
@@ -318,6 +371,9 @@ describe('AuthService', () => {
       authSessionsService as unknown as ConstructorParameters<
         typeof AuthService
       >[2],
+      passwordResetTokensService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[3],
     );
 
     await expect(
@@ -328,5 +384,6 @@ describe('AuthService', () => {
     expect(adminUsersService.findByEmail).toHaveBeenCalledWith(
       'disabled@solangebernard.com',
     );
+    expect(passwordResetTokensService.create).not.toHaveBeenCalled();
   });
 });

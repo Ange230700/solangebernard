@@ -6,6 +6,8 @@ import { AuthSessionsRepository } from './auth-sessions.repository';
 import { AuthSessionsService } from './auth-sessions.service';
 import { AuthService } from './auth.service';
 import { PasswordHashingService } from './password-hashing.service';
+import { PasswordResetTokensRepository } from './password-reset-tokens.repository';
+import { PasswordResetTokensService } from './password-reset-tokens.service';
 import { RoleGuard } from './role.guard';
 import { PrismaModule } from '../../persistence/prisma.module';
 
@@ -18,6 +20,8 @@ import { PrismaModule } from '../../persistence/prisma.module';
     AuthSessionsService,
     AuthService,
     PasswordHashingService,
+    PasswordResetTokensRepository,
+    PasswordResetTokensService,
     RoleGuard,
   ],
   exports: [
@@ -25,6 +29,7 @@ import { PrismaModule } from '../../persistence/prisma.module';
     AuthSessionsService,
     AuthService,
     PasswordHashingService,
+    PasswordResetTokensService,
     RoleGuard,
   ],
 })
