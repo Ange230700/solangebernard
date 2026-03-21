@@ -67,6 +67,7 @@ If any of these are missing:
 - Staff and admins can create and edit products while they are in `Draft`.
 - Publishing is the act that makes a product customer-visible.
 - Unpublishing is the MVP-safe alternative to removing a product from sale.
+- Product hard delete is not the MVP path for removing a product from sale.
 
 ## Repo Alignment
 
@@ -80,3 +81,7 @@ Current repo signals already agree on the intended MVP lifecycle:
 
 This document freezes that model and keeps `Archived` out of MVP until the repo
 actually needs it.
+
+## Related Decisions
+
+- `docs/deletion-rules.md`

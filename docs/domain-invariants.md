@@ -25,6 +25,10 @@ validation, persistence, and tests should all preserve these rules.
   rejected and the product must remain in `Draft`.
 - `PROD-005`: Unpublishing moves a product from `Published` back to `Draft`
   without deleting the product, its variants, or its media.
+- `PROD-006`: In MVP, removing a product from sale uses unpublish back to
+  `Draft`; a general product hard-delete flow is out of scope.
+- `PROD-007`: Removing `ProductMedia` is allowed, but a `Published` product
+  must not be left without the photo coverage required by `PROD-003`.
 
 ## Inventory Invariants
 
@@ -44,6 +48,8 @@ validation, persistence, and tests should all preserve these rules.
   `InventoryAdjustment` history record.
 - `STOCK-008`: Manual stock decreases that would push stock below zero must be
   rejected.
+- `STOCK-009`: `InventoryAdjustment` records are append-only history and must
+  not be deleted in normal MVP workflows.
 
 ## Order Invariants
 
@@ -66,6 +72,8 @@ validation, persistence, and tests should all preserve these rules.
   in customer-facing lookup flows.
 - `ORDER-010`: `OrderItem` data must preserve enough order-time snapshot
   context that later catalog edits do not rewrite what the customer ordered.
+- `ORDER-011`: `Order` and `OrderItem` records are durable business history and
+  must not be soft-deleted or hard-deleted in MVP workflows.
 
 ## Back-Office Identity Invariants
 
@@ -81,6 +89,10 @@ validation, persistence, and tests should all preserve these rules.
   time-bounded, and becomes unusable after expiry or successful consumption.
 - `AUTH-007`: A successful password reset must invalidate that user's prior
   authenticated sessions.
+- `AUTH-008`: Back-office accounts are disabled via account state such as
+  `isActive`; hard delete is not part of normal MVP account management.
+- `AUTH-009`: `AdminSession` and `PasswordResetToken` rows may be hard-deleted
+  only as technical cleanup after invalidation, expiry, or consumption.
 
 ## Notification Invariants
 
@@ -92,6 +104,8 @@ validation, persistence, and tests should all preserve these rules.
 - `NOTIF-003`: A `NotificationAttempt` is append-only history for one
   `Notification`; retrying creates a new attempt rather than overwriting a
   previous one.
+- `NOTIF-004`: `Notification` and `NotificationAttempt` records are operational
+  history and must not be deleted in normal MVP workflows.
 
 ## Boundary Note
 
@@ -105,6 +119,7 @@ validation, persistence, and tests should all preserve these rules.
 ## Related Decisions
 
 - `docs/domain-glossary.md`
+- `docs/deletion-rules.md`
 - `docs/mvp-scope.md`
 - `docs/business-actors.md`
 - `docs/product-lifecycle.md`

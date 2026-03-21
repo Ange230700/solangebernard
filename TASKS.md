@@ -396,6 +396,8 @@ Use created/updated timestamps consistently.
 
 ## 32. Decide soft-delete vs hard-delete rules
 
+Official source of truth: [docs/deletion-rules.md](docs/deletion-rules.md)
+
 MVP recommendation:
 
 - products: soft-ish via status/unpublish
