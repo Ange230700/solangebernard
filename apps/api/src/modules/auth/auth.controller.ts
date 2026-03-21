@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -8,7 +9,11 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import type { LoginResponse, LogoutResponse } from '@repo/contracts';
+import type {
+  CurrentUserResponse,
+  LoginResponse,
+  LogoutResponse,
+} from '@repo/contracts';
 import { ApiConfigService } from '../../config/api-config.service';
 import {
   clearAuthSessionCookie,
@@ -17,7 +22,7 @@ import {
 } from './auth-session-cookie';
 import { AuthGuard } from './auth.guard';
 import type { AuthenticatedAdminRequest } from './auth-request.types';
-import { mapLoginResponse } from './auth.response';
+import { mapCurrentUserResponse, mapLoginResponse } from './auth.response';
 import { LoginRequestDto } from './login.request';
 import { AuthService } from './auth.service';
 
@@ -65,5 +70,17 @@ export class AuthController {
     return {
       success: true,
     };
+  }
+
+  @Get('current-user')
+  @UseGuards(AuthGuard)
+  currentUser(@Req() request: AuthenticatedAdminRequest): CurrentUserResponse {
+    const authenticatedSession = request.authenticatedAdminSession;
+
+    if (!authenticatedSession) {
+      throw new Error('Authenticated session was missing after auth guard.');
+    }
+
+    return mapCurrentUserResponse(authenticatedSession);
   }
 }
