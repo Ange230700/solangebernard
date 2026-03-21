@@ -119,6 +119,9 @@ When the repository uses a GitHub Project backlog and access is available:
 - treat the matching GitHub Project item as part of the working context for the
   selected task
 - use the GitHub CLI when practical to inspect and update the project item
+- when asked to do backlog grooming, sprint planning, or roadmap maintenance,
+  agents may also create or update sprint field values, sprint options, and
+  future sprint planning items in the GitHub Project
 - keep project status aligned with real repo state instead of leaving stale `Todo`
   items behind
 - move the item to `In Progress` when implementation starts
