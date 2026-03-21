@@ -56,10 +56,17 @@ describe('Global validation (e2e)', () => {
     });
 
     expect(response.statusCode).toBe(400);
-    expect(response.json()).toMatchObject({
-      error: 'Bad Request',
-      message: ['name must be longer than or equal to 3 characters'],
-      statusCode: 400,
+    expect(response.json()).toEqual({
+      error: {
+        code: 'ValidationFailed',
+        message: 'Validation failed',
+        details: [
+          {
+            field: 'name',
+            message: 'name must be longer than or equal to 3 characters',
+          },
+        ],
+      },
     });
   });
 
@@ -74,10 +81,17 @@ describe('Global validation (e2e)', () => {
     });
 
     expect(response.statusCode).toBe(400);
-    expect(response.json()).toMatchObject({
-      error: 'Bad Request',
-      message: ['property role should not exist'],
-      statusCode: 400,
+    expect(response.json()).toEqual({
+      error: {
+        code: 'ValidationFailed',
+        message: 'Validation failed',
+        details: [
+          {
+            field: 'role',
+            message: 'property role should not exist',
+          },
+        ],
+      },
     });
   });
 });
