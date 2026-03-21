@@ -1,10 +1,9 @@
 import 'dotenv/config';
 
-import { scryptSync } from 'node:crypto';
-
 import { PrismaPg } from '@prisma/adapter-pg';
 
 import { PrismaClient } from '../generated/prisma/client.js';
+import { hashPassword } from '../src/modules/auth/password-hashing.js';
 
 const connectionString = process.env.DATABASE_URL;
 
@@ -71,25 +70,27 @@ const seedIds = {
   },
 } as const;
 
-function createPasswordHash(label: string): string {
-  const salt = `solangebernard-dev-seed:${label}:v1`;
-  const hash = scryptSync(devPassword, salt, 64).toString('hex');
-
-  return `scrypt$${salt}$${hash}`;
+function createPasswordHash(label: string): Promise<string> {
+  return hashPassword(devPassword, {
+    salt: `solangebernard-dev-seed:${label}:v1`,
+  });
 }
 
 async function seedAdminUsers() {
+  const adminPasswordHash = await createPasswordHash('admin');
+  const staffPasswordHash = await createPasswordHash('staff');
+
   const adminUser = await prisma.adminUser.upsert({
     where: { email: 'admin@solangebernard.com' },
     update: {
-      passwordHash: createPasswordHash('admin'),
+      passwordHash: adminPasswordHash,
       role: 'admin',
       isActive: true,
     },
     create: {
       id: seedIds.adminUser,
       email: 'admin@solangebernard.com',
-      passwordHash: createPasswordHash('admin'),
+      passwordHash: adminPasswordHash,
       role: 'admin',
       isActive: true,
     },
@@ -98,14 +99,14 @@ async function seedAdminUsers() {
   const staffUser = await prisma.adminUser.upsert({
     where: { email: 'staff@solangebernard.com' },
     update: {
-      passwordHash: createPasswordHash('staff'),
+      passwordHash: staffPasswordHash,
       role: 'staff',
       isActive: true,
     },
     create: {
       id: seedIds.staffUser,
       email: 'staff@solangebernard.com',
-      passwordHash: createPasswordHash('staff'),
+      passwordHash: staffPasswordHash,
       role: 'staff',
       isActive: true,
     },
