@@ -3,7 +3,10 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import type { LoginRequest } from '@repo/contracts';
+import type {
+  LoginRequest,
+  RequestPasswordResetRequest,
+} from '@repo/contracts';
 import { AdminUsersService } from '../admin-users/admin-users.service';
 import { AuthSessionsService } from './auth-sessions.service';
 import { PasswordHashingService } from './password-hashing.service';
@@ -60,6 +63,17 @@ export class AuthService {
 
   async logout(sessionId: string): Promise<void> {
     await this.authSessionsService.invalidateById(sessionId);
+  }
+
+  async requestPasswordReset(
+    request: RequestPasswordResetRequest,
+  ): Promise<void> {
+    const email = normalizeEmailAddress(request.email);
+    const user = await this.adminUsersService.findByEmail(email);
+
+    if (!user || !user.isActive) {
+      return;
+    }
   }
 }
 

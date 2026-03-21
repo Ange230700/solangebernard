@@ -13,6 +13,7 @@ import type {
   CurrentUserResponse,
   LoginResponse,
   LogoutResponse,
+  RequestPasswordResetResponse,
 } from '@repo/contracts';
 import { ApiConfigService } from '../../config/api-config.service';
 import {
@@ -24,6 +25,7 @@ import { AuthGuard } from './auth.guard';
 import type { AuthenticatedAdminRequest } from './auth-request.types';
 import { mapCurrentUserResponse, mapLoginResponse } from './auth.response';
 import { LoginRequestDto } from './login.request';
+import { RequestPasswordResetRequestDto } from './request-password-reset.request';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -69,6 +71,18 @@ export class AuthController {
 
     return {
       success: true,
+    };
+  }
+
+  @Post('password-reset/request')
+  @HttpCode(HttpStatus.ACCEPTED)
+  async requestPasswordReset(
+    @Body() request: RequestPasswordResetRequestDto,
+  ): Promise<RequestPasswordResetResponse> {
+    await this.authService.requestPasswordReset(request);
+
+    return {
+      accepted: true,
     };
   }
 

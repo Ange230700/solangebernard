@@ -224,4 +224,109 @@ describe('AuthService', () => {
       'session_1',
     );
   });
+
+  it('accepts password reset requests for active users', async () => {
+    const adminUsersService = {
+      findByEmail: jest.fn().mockResolvedValue(activeAdminUser),
+    };
+    const authSessionsService = {
+      create: jest.fn(),
+      invalidateById: jest.fn(),
+    };
+    const passwordHashingService = {
+      verifyPassword: jest.fn(),
+    };
+    const service = new AuthService(
+      adminUsersService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[0],
+      passwordHashingService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[1],
+      authSessionsService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[2],
+    );
+
+    await expect(
+      service.requestPasswordReset({
+        email: ' Staff@SolangeBernard.com ',
+      }),
+    ).resolves.toBeUndefined();
+    expect(adminUsersService.findByEmail).toHaveBeenCalledWith(
+      'staff@solangebernard.com',
+    );
+  });
+
+  it('accepts password reset requests for unknown email addresses', async () => {
+    const adminUsersService = {
+      findByEmail: jest.fn().mockResolvedValue(null),
+    };
+    const authSessionsService = {
+      create: jest.fn(),
+      invalidateById: jest.fn(),
+    };
+    const passwordHashingService = {
+      verifyPassword: jest.fn(),
+    };
+    const service = new AuthService(
+      adminUsersService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[0],
+      passwordHashingService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[1],
+      authSessionsService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[2],
+    );
+
+    await expect(
+      service.requestPasswordReset({
+        email: 'unknown@solangebernard.com',
+      }),
+    ).resolves.toBeUndefined();
+    expect(adminUsersService.findByEmail).toHaveBeenCalledWith(
+      'unknown@solangebernard.com',
+    );
+  });
+
+  it('accepts password reset requests for disabled accounts without exposing account state', async () => {
+    const disabledAdminUser: StoredAdminUser = {
+      ...activeAdminUser,
+      email: 'disabled@solangebernard.com',
+      isActive: false,
+      role: 'staff',
+    };
+    const adminUsersService = {
+      findByEmail: jest.fn().mockResolvedValue(disabledAdminUser),
+    };
+    const authSessionsService = {
+      create: jest.fn(),
+      invalidateById: jest.fn(),
+    };
+    const passwordHashingService = {
+      verifyPassword: jest.fn(),
+    };
+    const service = new AuthService(
+      adminUsersService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[0],
+      passwordHashingService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[1],
+      authSessionsService as unknown as ConstructorParameters<
+        typeof AuthService
+      >[2],
+    );
+
+    await expect(
+      service.requestPasswordReset({
+        email: 'disabled@solangebernard.com',
+      }),
+    ).resolves.toBeUndefined();
+    expect(adminUsersService.findByEmail).toHaveBeenCalledWith(
+      'disabled@solangebernard.com',
+    );
+  });
 });
