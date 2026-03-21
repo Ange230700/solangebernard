@@ -16,6 +16,10 @@
       "types": "./dist/enums.d.ts",
       "import": "./dist/enums.js"
     },
+    "./errors": {
+      "types": "./dist/errors.d.ts",
+      "import": "./dist/errors.js"
+    },
     "./pagination": {
       "types": "./dist/pagination.d.ts",
       "import": "./dist/pagination.js"
