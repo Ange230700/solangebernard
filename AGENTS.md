@@ -119,9 +119,10 @@ When the repository uses a GitHub Project backlog and access is available:
 - treat the matching GitHub Project item as part of the working context for the
   selected task
 - use the GitHub CLI when practical to inspect and update the project item
-- when asked to do backlog grooming, sprint planning, or roadmap maintenance,
-  agents may also create or update sprint field values, sprint options, and
-  future sprint planning items in the GitHub Project
+- agents may proactively maintain sprint field values, sprint options, and add
+  or update future sprint planning items whenever backlog structure is clearly
+  missing, stale, or inconsistent with the repo roadmap, unless the maintainer
+  asks to keep planning unchanged
 - keep project status aligned with real repo state instead of leaving stale `Todo`
   items behind
 - move the item to `In Progress` when implementation starts
@@ -129,8 +130,9 @@ When the repository uses a GitHub Project backlog and access is available:
   complete
 - if the work is partial, blocked, or intentionally split across tasks, leave the
   item in `In Progress` and state the reason clearly
-- do not bulk rewrite the project backlog or create new project items unless the
-  maintainer asks for backlog cleanup or backlog expansion
+- do not bulk rewrite the project backlog outside that sprint-planning
+  maintenance scope or create unrelated project items unless the maintainer
+  asks for backlog cleanup or backlog expansion
 - say clearly when GitHub Project access is missing, unsupported, or blocked by
   authentication so project updates are not silently skipped
 
