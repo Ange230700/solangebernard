@@ -1,6 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import type { HealthResponse } from '@repo/contracts';
 import { HealthService } from './health.service';
+import { mapHealthResponse } from './health.response';
 
 @Controller()
 export class HealthController {
@@ -8,6 +9,6 @@ export class HealthController {
 
   @Get('health')
   getHealth(): HealthResponse {
-    return this.healthService.getHealth();
+    return mapHealthResponse(this.healthService.getHealth());
   }
 }

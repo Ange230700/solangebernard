@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import type { HealthResponse } from '@repo/contracts';
+
+export interface HealthCheckResult {
+  isHealthy: true;
+}
 
 @Injectable()
 export class HealthService {
-  getHealth(): HealthResponse {
-    return { status: 'ok' };
+  getHealth(): HealthCheckResult {
+    return { isHealthy: true };
   }
 }
