@@ -3,6 +3,7 @@ import type { INestApplication } from '@nestjs/common';
 import type { ErrorDetail } from '@repo/contracts';
 import type { ValidationError } from 'class-validator';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
+import { createRequestLoggingMiddleware } from './common/middleware/request-logging.middleware';
 import {
   API_CORS_ALLOWED_HEADERS,
   API_CORS_ALLOWED_METHODS,
@@ -19,6 +20,7 @@ export function configureApp(
   app: INestApplication,
   options: AppSetupOptions = {},
 ): void {
+  app.use(createRequestLoggingMiddleware());
   app.enableCors(createCorsOptions(options.cors));
   app.useGlobalPipes(
     new ValidationPipe({
