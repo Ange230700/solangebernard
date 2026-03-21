@@ -1,5 +1,12 @@
 import type { AdminRole } from '../enums.js';
-import type { EmailAddress, EntityId } from '../shared.js';
+import type { EmailAddress, EntityId, IsoDateTimeString } from '../shared.js';
+
+export const AuthSessionTransport = {
+  Cookie: 'cookie',
+} as const;
+
+export type AuthSessionTransport =
+  (typeof AuthSessionTransport)[keyof typeof AuthSessionTransport];
 
 export interface AuthenticatedAdminUser {
   id: EntityId;
@@ -8,18 +15,25 @@ export interface AuthenticatedAdminUser {
   isActive: boolean;
 }
 
+export interface AuthSession {
+  transport: AuthSessionTransport;
+  issuedAt: IsoDateTimeString;
+  expiresAt: IsoDateTimeString;
+}
+
+export interface AuthenticatedSessionResponse {
+  user: AuthenticatedAdminUser;
+  session: AuthSession;
+}
+
 export interface LoginRequest {
   email: EmailAddress;
   password: string;
 }
 
-export interface LoginResponse {
-  user: AuthenticatedAdminUser;
-}
+export interface LoginResponse extends AuthenticatedSessionResponse {}
 
-export interface CurrentUserResponse {
-  user: AuthenticatedAdminUser;
-}
+export interface CurrentUserResponse extends AuthenticatedSessionResponse {}
 
 export interface LogoutResponse {
   success: true;

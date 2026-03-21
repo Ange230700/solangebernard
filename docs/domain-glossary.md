@@ -116,6 +116,15 @@ contracts, domain package, persistence model, and UI copy.
 - successful password reset invalidates prior authenticated sessions for that
   user
 
+### AdminSession
+
+- server-managed authenticated back-office session for one `AdminUser`
+- uses an HTTP cookie transport in MVP instead of returning a bearer token in
+  response bodies
+- is time-bounded and may also be invalidated explicitly on logout or password
+  reset
+- is required for protected back-office routes
+
 ## Notification Terms
 
 ### Notification
