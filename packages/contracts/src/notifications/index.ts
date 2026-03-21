@@ -3,6 +3,7 @@ import type {
   NotificationStatus,
   OrderStatus,
 } from '../enums.js';
+import type { PaginationMeta, PaginationQuery } from '../pagination.js';
 import type {
   EntityId,
   IsoDateTimeString,
@@ -40,13 +41,14 @@ export interface NotificationDetail extends NotificationSummary {
   attempts: NotificationAttempt[];
 }
 
-export interface ListNotificationsQuery {
+export interface ListNotificationsQuery extends PaginationQuery {
   orderId?: EntityId;
   status?: NotificationStatus;
 }
 
 export interface ListNotificationsResponse {
   notifications: NotificationSummary[];
+  pagination: PaginationMeta;
 }
 
 export interface GetNotificationResponse {

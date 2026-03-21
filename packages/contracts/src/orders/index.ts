@@ -1,4 +1,5 @@
 import type { OrderStatus, OrderStatusLabel } from '../enums.js';
+import type { PaginationMeta, PaginationQuery } from '../pagination.js';
 import type {
   EntityId,
   IsoDateTimeString,
@@ -78,12 +79,13 @@ export interface LookupOrderResponse {
   order: CustomerOrder;
 }
 
-export interface ListAdminOrdersQuery {
+export interface ListAdminOrdersQuery extends PaginationQuery {
   status?: OrderStatus;
 }
 
 export interface ListAdminOrdersResponse {
   orders: AdminOrderSummary[];
+  pagination: PaginationMeta;
 }
 
 export interface GetAdminOrderResponse {

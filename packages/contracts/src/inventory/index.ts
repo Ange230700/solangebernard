@@ -1,4 +1,5 @@
 import type { ProductStatus } from '../enums.js';
+import type { PaginationMeta, PaginationQuery } from '../pagination.js';
 import type {
   EntityId,
   IsoDateTimeString,
@@ -27,13 +28,17 @@ export interface InventoryAdjustment {
   recordedAt: IsoDateTimeString;
 }
 
-export interface ListInventoryQuery {
+export interface ListInventoryQuery extends PaginationQuery {
   productId?: EntityId;
   productStatus?: ProductStatus;
 }
 
 export interface ListInventoryResponse {
   variants: InventoryVariantSummary[];
+  pagination: PaginationMeta;
+}
+
+export interface InventoryHistoryQuery extends PaginationQuery {
 }
 
 export interface AdjustInventoryRequest {
@@ -51,4 +56,5 @@ export interface AdjustInventoryResponse {
 export interface InventoryHistoryResponse {
   variant: InventoryVariantSummary;
   adjustments: InventoryAdjustment[];
+  pagination: PaginationMeta;
 }

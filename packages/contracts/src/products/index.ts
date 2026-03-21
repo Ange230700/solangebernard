@@ -1,4 +1,5 @@
 import type { ProductStatus } from '../enums.js';
+import type { PaginationMeta, PaginationQuery } from '../pagination.js';
 import type {
   EntityId,
   IsoDateTimeString,
@@ -74,25 +75,27 @@ export interface UpsertProductVariantInput {
   stock: number;
 }
 
-export interface ListPublicProductsQuery {
+export interface ListPublicProductsQuery extends PaginationQuery {
   category?: string;
 }
 
 export interface ListPublicProductsResponse {
   products: PublicProductSummary[];
+  pagination: PaginationMeta;
 }
 
 export interface GetPublicProductResponse {
   product: PublicProductDetail;
 }
 
-export interface ListAdminProductsQuery {
+export interface ListAdminProductsQuery extends PaginationQuery {
   category?: string;
   status?: ProductStatus;
 }
 
 export interface ListAdminProductsResponse {
   products: AdminProductSummary[];
+  pagination: PaginationMeta;
 }
 
 export interface GetAdminProductResponse {
