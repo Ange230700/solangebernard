@@ -1,11 +1,10 @@
+import type { ProductStatus } from '../enums.js';
 import type {
   EntityId,
   IsoDateTimeString,
   PriceAmount,
   ProductSku,
 } from '../shared.js';
-
-export type ProductStatus = 'Draft' | 'Published';
 
 export interface ProductMedia {
   id: EntityId;

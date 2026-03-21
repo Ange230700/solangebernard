@@ -1,6 +1,5 @@
+import type { AdminRole } from '../enums.js';
 import type { EmailAddress, EntityId } from '../shared.js';
-
-export type AdminRole = 'staff' | 'admin';
 
 export interface AuthenticatedAdminUser {
   id: EntityId;

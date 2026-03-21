@@ -1,4 +1,4 @@
-import type { ProductStatus } from '../products/index.js';
+import type { ProductStatus } from '../enums.js';
 import type {
   EntityId,
   IsoDateTimeString,

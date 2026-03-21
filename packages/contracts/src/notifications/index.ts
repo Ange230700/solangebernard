@@ -1,13 +1,13 @@
-import type { OrderStatus } from '../orders/index.js';
+import type {
+  NotificationAttemptOutcome,
+  NotificationStatus,
+  OrderStatus,
+} from '../enums.js';
 import type {
   EntityId,
   IsoDateTimeString,
   PhoneNumber,
 } from '../shared.js';
-
-export type NotificationStatus = 'Queued' | 'Sent' | 'Failed';
-
-export type NotificationAttemptOutcome = 'Sent' | 'Failed';
 
 export interface NotificationAttempt {
   id: EntityId;

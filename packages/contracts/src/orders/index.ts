@@ -1,3 +1,4 @@
+import type { OrderStatus, OrderStatusLabel } from '../enums.js';
 import type {
   EntityId,
   IsoDateTimeString,
@@ -5,20 +6,6 @@ import type {
   PhoneNumber,
   PriceAmount,
 } from '../shared.js';
-
-export type OrderStatus =
-  | 'PendingConfirmation'
-  | 'Confirmed'
-  | 'ReadyForDelivery'
-  | 'Delivered'
-  | 'Cancelled';
-
-export type OrderStatusLabel =
-  | 'Pending confirmation'
-  | 'Confirmed'
-  | 'Ready for delivery'
-  | 'Delivered'
-  | 'Cancelled';
 
 export interface CustomerContact {
   fullName: string;
