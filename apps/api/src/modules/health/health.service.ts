@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import type { HealthResponse } from '@repo/contracts';
+import type { HealthResponse } from '@repo/contracts/health';
 
 @Injectable()
-export class AppService {
+export class HealthService {
   getHealth(): HealthResponse {
     return { status: 'ok' };
   }

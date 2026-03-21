@@ -5,7 +5,7 @@ import {
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from './../src/app.module';
 
-describe('AppController (e2e)', () => {
+describe('Health endpoint (e2e)', () => {
   let app: NestFastifyApplication;
 
   beforeEach(async () => {
