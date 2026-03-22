@@ -174,6 +174,69 @@ describe('ProductsRepository', () => {
     });
   });
 
+  it('applies the published-only visibility filter for unfiltered public listings', async () => {
+    const count = jest.fn().mockResolvedValue(0);
+    const findMany = jest.fn().mockResolvedValue([]);
+    const prisma = createPrismaServiceMock({
+      count,
+      findMany,
+    });
+    const repository = new ProductsRepository(prisma);
+
+    await repository.listPublicProducts({
+      page: 1,
+      pageSize: 20,
+    });
+
+    expect(count).toHaveBeenCalledWith({
+      where: {
+        status: 'Published',
+        priceAmount: {
+          not: null,
+        },
+        media: {
+          some: {},
+        },
+      },
+    });
+    expect(findMany).toHaveBeenCalledWith({
+      where: {
+        status: 'Published',
+        priceAmount: {
+          not: null,
+        },
+        media: {
+          some: {},
+        },
+      },
+      skip: 0,
+      take: 20,
+      orderBy: [{ createdAt: 'desc' }, { id: 'asc' }],
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        category: true,
+        priceAmount: true,
+        media: {
+          select: {
+            id: true,
+            url: true,
+            altText: true,
+            isMain: true,
+            displayOrder: true,
+          },
+          orderBy: [
+            { isMain: 'desc' },
+            { displayOrder: 'asc' },
+            { createdAt: 'asc' },
+            { id: 'asc' },
+          ],
+        },
+      },
+    });
+  });
+
   it('returns a published product detail with ordered media and stock availability', async () => {
     const findFirst = jest.fn().mockResolvedValue({
       id: 'product_1',
