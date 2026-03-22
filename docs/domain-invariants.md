@@ -109,12 +109,9 @@ validation, persistence, and tests should all preserve these rules.
 
 ## Boundary Note
 
-- This document freezes invariant rules, not the full notification event
-  matrix.
-- The repo currently confirms customer notification queueing after order
-  confirmation.
-- A later task should still freeze the exact MVP trigger list, channel choice,
-  and failure-handling details for notifications.
+- This document freezes invariant rules.
+- `docs/customer-notification-rules.md` freezes the exact MVP trigger list,
+  channel choice, and failure-handling detail for customer notifications.
 
 ## Related Decisions
 

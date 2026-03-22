@@ -103,12 +103,13 @@ forbidden, and which side effects matter when a state change happens.
 
 ### Notification
 
-- The repo currently freezes only that qualifying order events can create
-  queued notification records and that notification failure does not roll back
-  order state.
-- This document does not freeze a full notification status machine yet because
-  the exact notification behavior and trigger matrix are still underdefined in
-  the backlog.
+- Valid order transitions to `Confirmed`, `ReadyForDelivery`, `Delivered`, and
+  `Cancelled` can create queued customer notification records.
+- `SMS` is the MVP-first customer notification channel.
+- Notification failure does not roll back order state.
+- This document still does not freeze a full notification delivery status
+  machine; `docs/customer-notification-rules.md` only freezes the trigger
+  matrix, channel choice, and non-blocking failure rule.
 
 ## Coordination Rule
 

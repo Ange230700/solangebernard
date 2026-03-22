@@ -140,9 +140,13 @@ endpoints, target frontend screens, and expected test types.
 
 ### Queue customer notifications for order status changes
 
-| Scenario                                               | Domain objects                                                                   | API endpoint(s)                       | Frontend screen(s)                   | Test type(s)                              | Basis   |
-| ------------------------------------------------------ | -------------------------------------------------------------------------------- | ------------------------------------- | ------------------------------------ | ----------------------------------------- | ------- |
-| Queue a customer notification after order confirmation | `Order`, `OrderStatus`, `CustomerContact`, `Notification`, `NotificationAttempt` | `POST /admin/orders/{orderId}/status` | Desktop order detail status workflow | API integration, notification integration | Derived |
+| Scenario                                                          | Domain objects                                                                   | API endpoint(s)                       | Frontend screen(s)                   | Test type(s)                              | Basis   |
+| ----------------------------------------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------- | ------------------------------------ | ----------------------------------------- | ------- |
+| Queue a customer notification after order confirmation            | `Order`, `OrderStatus`, `CustomerContact`, `Notification`, `NotificationAttempt` | `POST /admin/orders/{orderId}/status` | Desktop order detail status workflow | API integration, notification integration | Derived |
+| Queue a customer notification when an order is ready for delivery | `Order`, `OrderStatus`, `CustomerContact`, `Notification`, `NotificationAttempt` | `POST /admin/orders/{orderId}/status` | Desktop order detail status workflow | API integration, notification integration | Derived |
+| Queue a customer notification when an order is delivered          | `Order`, `OrderStatus`, `CustomerContact`, `Notification`, `NotificationAttempt` | `POST /admin/orders/{orderId}/status` | Desktop order detail status workflow | API integration, notification integration | Derived |
+| Queue a customer notification when an order is cancelled          | `Order`, `OrderStatus`, `CustomerContact`, `Notification`, `NotificationAttempt` | `POST /admin/orders/{orderId}/status` | Desktop order detail status workflow | API integration, notification integration | Derived |
+| Notification failure does not roll back an order status update    | `Order`, `OrderStatus`, `Notification`, `NotificationAttempt`                    | `POST /admin/orders/{orderId}/status` | Desktop order detail status workflow | API integration, notification integration | Derived |
 
 ## Platform
 

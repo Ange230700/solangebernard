@@ -76,7 +76,5 @@ The current BDD coverage already maps to most of this scope through:
 - `docs/bdd/mvp/orders`
 - `docs/bdd/mvp/products`
 - `docs/bdd/mvp/inventory`
+- `docs/bdd/mvp/notifications`
 - `docs/bdd/mvp/platform`
-
-`customer notifications` remain in MVP scope even though dedicated BDD coverage
-for that area still needs to be added.

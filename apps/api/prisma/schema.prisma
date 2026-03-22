@@ -184,8 +184,8 @@ model Notification {
   /// Notification status stays string-based until the repo freezes the full
   /// notification lifecycle vocabulary.
   status                 String
-  /// Channel stays open-ended because the exact MVP notification channel choice
-  /// is not frozen yet.
+  /// Channel stays string-based so the persisted model can keep working beyond
+  /// the MVP-first SMS choice frozen in docs/customer-notification-rules.md.
   channel                String?
   recipientName          String
   recipientPhone         String
