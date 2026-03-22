@@ -49,10 +49,11 @@ Useful target-local commands:
 - API build: `pnpm --dir apps/api run build`
 - API Prisma validate: `pnpm --dir apps/api run prisma:validate`
 - API Prisma generate: `pnpm --dir apps/api run prisma:generate`
+- API Prisma migrate deploy: `pnpm --dir apps/api run prisma:migrate:deploy`
 - API Prisma push: `pnpm --dir apps/api run prisma:push`
 - API Prisma seed: `pnpm --dir apps/api run prisma:seed`
 - Start local PostgreSQL via Docker: `pnpm db:dev:up`
-- Apply the Prisma schema to local PostgreSQL: `pnpm db:push`
+- Apply committed Prisma migrations to local PostgreSQL: `pnpm db:migrate`
 - Seed the local development database: `pnpm db:seed`
 - Stop the local PostgreSQL container: `pnpm db:dev:down`
 
@@ -62,6 +63,7 @@ with matching local credentials, port, and database name.
 ## Persistence
 
 - API Prisma schema: `apps/api/prisma/schema.prisma`
+- API Prisma migrations: `apps/api/prisma/migrations`
 - API Prisma seed: `apps/api/prisma/seed.ts`
 - API Prisma config: `apps/api/prisma.config.ts`
 - API database env example: `apps/api/.env.example`

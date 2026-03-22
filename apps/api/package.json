@@ -13,6 +13,7 @@
     "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
     "prisma:format": "prisma format",
     "prisma:generate": "prisma generate",
+    "prisma:migrate:deploy": "prisma migrate deploy",
     "prisma:push": "prisma db push",
     "prisma:seed:execute": "pnpm exec tsc -p tsconfig.seed.json && node scripts/prepare-seed-build.mjs && node .seed-build/prisma/seed.js",
     "prisma:seed": "pnpm run prisma:generate && prisma db seed",

@@ -14,8 +14,8 @@ schema into the first committed PostgreSQL migration artifact.
   database.
 - The repo already froze PostgreSQL as the only planned MVP database and Prisma
   as the only planned ORM or query layer.
-- The API package currently exposes Prisma format, generate, and validate
-  scripts, but it does not yet expose dedicated migrate scripts.
+- The API package now exposes Prisma validate, generate, and migrate deploy
+  scripts for local and shared-environment schema application.
 - Seed data is the next separate task and should not be bundled into the first
   schema migration.
 
@@ -86,8 +86,7 @@ Recommended command flow:
 - CI or deployment automation that runs migrations automatically
 - backup, restore, or rollback mechanics
 - production-specific operator runbooks
-- a long-term package-script surface such as `prisma:migrate:dev` or
-  `prisma:migrate:deploy`
+- a broader migration script surface beyond the currently needed deploy path
 
 Those choices belong to later tasks.
 

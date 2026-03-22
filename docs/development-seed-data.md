@@ -11,12 +11,12 @@ database for day-to-day development.
 From the repo root:
 
 - `pnpm db:dev:up`
-- `pnpm db:push`
+- `pnpm db:migrate`
 - `pnpm db:seed`
 
 From `apps/api`:
 
-- `pnpm run prisma:push`
+- `pnpm run prisma:migrate:deploy`
 - `pnpm run prisma:seed`
 
 ## Seed Behavior
@@ -26,12 +26,13 @@ From `apps/api`:
 - The seed updates or creates the minimum named records it owns.
 - The seed does not wipe unrelated data from the database.
 - The root workflow starts the local Docker PostgreSQL container, waits for it
-  to become healthy, applies the current Prisma schema with `prisma db push`,
-  and then runs the seed.
+  to become healthy, applies the committed Prisma migrations with
+  `prisma migrate deploy`, and then runs the seed.
 - The Docker bootstrap reads `apps/api/.env` so the local container matches the
   configured `DATABASE_URL` database name, credentials, and port.
 - The API-local seed command expects a reachable PostgreSQL database and is best
-  paired with `pnpm run prisma:push` when run outside the root workflow.
+  paired with `pnpm run prisma:migrate:deploy` when run outside the root
+  workflow.
 
 ## Seeded Back-Office Users
 
