@@ -1,6 +1,8 @@
 import type {
   PaginationMeta,
   ProductMedia,
+  ProductVariant,
+  PublicProductDetail,
   PublicProductSummary,
 } from '@repo/contracts';
 import { Inject, Injectable } from '@nestjs/common';
@@ -31,6 +33,19 @@ interface StoredPublicProductSummary {
   media: StoredProductMedia[];
 }
 
+interface StoredProductVariant {
+  id: string;
+  sku: string;
+  size: string | null;
+  color: string | null;
+  variantLabel: string;
+  stock: number;
+}
+
+interface StoredPublicProductDetail extends StoredPublicProductSummary {
+  variants: StoredProductVariant[];
+}
+
 @Injectable()
 export class ProductsRepository {
   constructor(
@@ -41,16 +56,9 @@ export class ProductsRepository {
   async listPublicProducts(
     params: ListPublicProductsParams,
   ): Promise<ListPublicProductsResult> {
-    const where = {
-      status: PUBLISHED_PRODUCT_STATUS,
-      ...(params.category ? { category: params.category } : {}),
-      priceAmount: {
-        not: null,
-      },
-      media: {
-        some: {},
-      },
-    };
+    const where = createPublicProductWhere({
+      category: params.category,
+    });
 
     const [totalItems, products] = await Promise.all([
       this.prisma.product.count({
@@ -91,6 +99,51 @@ export class ProductsRepository {
       pagination: createPaginationMeta(params, totalItems),
     };
   }
+
+  async getPublicProduct(
+    productId: string,
+  ): Promise<PublicProductDetail | null> {
+    const product = await this.prisma.product.findFirst({
+      where: createPublicProductWhere({
+        id: productId,
+      }),
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        category: true,
+        priceAmount: true,
+        media: {
+          select: {
+            id: true,
+            url: true,
+            altText: true,
+            isMain: true,
+            displayOrder: true,
+          },
+          orderBy: [
+            { isMain: 'desc' },
+            { displayOrder: 'asc' },
+            { createdAt: 'asc' },
+            { id: 'asc' },
+          ],
+        },
+        variants: {
+          select: {
+            id: true,
+            sku: true,
+            size: true,
+            color: true,
+            variantLabel: true,
+            stock: true,
+          },
+          orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
+        },
+      },
+    });
+
+    return product ? mapPublicProductDetail(product) : null;
+  }
 }
 
 function mapPublicProductSummary(
@@ -117,6 +170,16 @@ function mapPublicProductSummary(
   };
 }
 
+function mapPublicProductDetail(
+  product: StoredPublicProductDetail,
+): PublicProductDetail {
+  return {
+    ...mapPublicProductSummary(product),
+    media: product.media.map((media) => mapProductMedia(media)),
+    variants: product.variants.map((variant) => mapProductVariant(variant)),
+  };
+}
+
 function mapProductMedia(media: StoredProductMedia): ProductMedia {
   return {
     id: media.id,
@@ -124,6 +187,18 @@ function mapProductMedia(media: StoredProductMedia): ProductMedia {
     altText: media.altText,
     isMain: media.isMain,
     displayOrder: media.displayOrder,
+  };
+}
+
+function mapProductVariant(variant: StoredProductVariant): ProductVariant {
+  return {
+    id: variant.id,
+    sku: variant.sku,
+    size: variant.size,
+    color: variant.color,
+    variantLabel: variant.variantLabel,
+    stock: variant.stock,
+    inStock: variant.stock > 0,
   };
 }
 
@@ -141,5 +216,22 @@ function createPaginationMeta(
     totalPages,
     hasNextPage: params.page < totalPages,
     hasPreviousPage: params.page > 1,
+  };
+}
+
+function createPublicProductWhere(filters: {
+  category?: string | undefined;
+  id?: string | undefined;
+}) {
+  return {
+    ...(filters.id ? { id: filters.id } : {}),
+    status: PUBLISHED_PRODUCT_STATUS,
+    ...(filters.category ? { category: filters.category } : {}),
+    priceAmount: {
+      not: null,
+    },
+    media: {
+      some: {},
+    },
   };
 }

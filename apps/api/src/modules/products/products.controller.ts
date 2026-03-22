@@ -1,7 +1,13 @@
-import { Controller, Get, Query } from '@nestjs/common';
-import type { ListPublicProductsResponse } from '@repo/contracts';
+import { Controller, Get, Param, Query } from '@nestjs/common';
+import type {
+  GetPublicProductResponse,
+  ListPublicProductsResponse,
+} from '@repo/contracts';
 import { ListPublicProductsQueryDto } from './list-public-products.query';
-import { mapListPublicProductsResponse } from './products.response';
+import {
+  mapGetPublicProductResponse,
+  mapListPublicProductsResponse,
+} from './products.response';
 import { ProductsService } from './products.service';
 
 @Controller('catalog/products')
@@ -15,5 +21,14 @@ export class ProductsController {
     const result = await this.productsService.listPublicProducts(query);
 
     return mapListPublicProductsResponse(result);
+  }
+
+  @Get(':productId')
+  async getPublicProduct(
+    @Param('productId') productId: string,
+  ): Promise<GetPublicProductResponse> {
+    const product = await this.productsService.getPublicProduct(productId);
+
+    return mapGetPublicProductResponse(product);
   }
 }

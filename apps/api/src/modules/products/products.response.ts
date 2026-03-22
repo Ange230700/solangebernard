@@ -1,6 +1,9 @@
 import type {
+  GetPublicProductResponse,
   ListPublicProductsResponse,
   ProductMedia,
+  ProductVariant,
+  PublicProductDetail,
   PublicProductSummary,
 } from '@repo/contracts';
 import { mapCollectionResponse } from '../../common/responses/response-mapping';
@@ -17,6 +20,14 @@ export function mapListPublicProductsResponse(
   );
 }
 
+export function mapGetPublicProductResponse(
+  product: PublicProductDetail,
+): GetPublicProductResponse {
+  return {
+    product: mapPublicProductDetail(product),
+  };
+}
+
 function mapPublicProductSummary(
   product: PublicProductSummary,
 ): PublicProductSummary {
@@ -30,6 +41,16 @@ function mapPublicProductSummary(
   };
 }
 
+function mapPublicProductDetail(
+  product: PublicProductDetail,
+): PublicProductDetail {
+  return {
+    ...mapPublicProductSummary(product),
+    media: product.media.map((media) => mapProductMedia(media)),
+    variants: product.variants.map((variant) => mapProductVariant(variant)),
+  };
+}
+
 function mapProductMedia(media: ProductMedia): ProductMedia {
   return {
     id: media.id,
@@ -37,5 +58,17 @@ function mapProductMedia(media: ProductMedia): ProductMedia {
     altText: media.altText,
     isMain: media.isMain,
     displayOrder: media.displayOrder,
+  };
+}
+
+function mapProductVariant(variant: ProductVariant): ProductVariant {
+  return {
+    id: variant.id,
+    sku: variant.sku,
+    size: variant.size,
+    color: variant.color,
+    variantLabel: variant.variantLabel,
+    stock: variant.stock,
+    inStock: variant.inStock,
   };
 }
